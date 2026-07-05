@@ -14,7 +14,6 @@ crash.log
 crash.*.log
 
 # Variable files - likely to contain sensitive / environment-specific data
-#*.tfvars
 *.tfvars.json
 
 # Override files

@@ -11,4 +11,8 @@ module "networking" {
   private_subnet_name     = var.private_subnet_name
   public_cidr_range       = var.public_cidr_range
   private_cidr_range      = var.private_cidr_range
+
+  router_name = var.router_name
+  nat_name    = var.nat_name
 }
+

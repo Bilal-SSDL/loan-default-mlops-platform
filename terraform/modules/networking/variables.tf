@@ -35,3 +35,13 @@ variable "region" {
   type = string
 }
 
+variable "router_name" {
+  description = "name of cloud router"
+  type = string
+}
+
+variable "nat_name" {
+  description = "name of cloud nat"
+  type = string
+}
+
