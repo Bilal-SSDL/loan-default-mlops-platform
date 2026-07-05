@@ -1,1 +1,31 @@
 datasets/
+
+# ---- Terraform ----
+
+# Local .terraform directories (provider binaries, module cache)
+**/.terraform/*
+
+# State files (may contain secrets; managed by the remote backend)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files - likely to contain sensitive / environment-specific data
+#*.tfvars
+*.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI config and plan output
+.terraformrc
+terraform.rc
+*.tfplan
+
+# NOTE: .terraform.lock.hcl is intentionally NOT ignored - it should be committed.
