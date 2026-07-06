@@ -17,6 +17,23 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
+variable "bucket_name" {
+  description = "name of the GCS bucket"
+  type        = string
+}
+
+variable "bucket_versioning" {
+  description = "whether to enable versioning for the GCS bucket"
+  type        = bool
+  default     = true
+}
+
+variable "bucket_location" {
+  description = "location of the GCS bucket"
+  type        = string
+  default     = "us"
+}
+
 variable "vpc_name" {
   description = "name of vpc"
   type        = string

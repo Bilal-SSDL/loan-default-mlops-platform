@@ -8,3 +8,7 @@ public_cidr_range   = "10.0.1.0/24"
 private_cidr_range  = "10.0.2.0/24"
 router_name         = "mlops-router"
 nat_name            = "mlops-nat"
+bucket_name         = "lendo-mlops-terraform-state"
+bucket_versioning   = true
+bucket_location     = "US"
+

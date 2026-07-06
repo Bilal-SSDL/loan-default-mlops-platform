@@ -23,5 +23,15 @@ output "public_subnet_name" {
   value       = module.networking.public_subnet_name
 }
 
+output "bucket_name" {
+  description = "name of gcs bucket created"
+  value       = module.storage.bucket_name
+}
+
+output "bucket_url" {
+  description = "url of the bucket"
+  value       = module.storage.bucket_url
+}
+
 
 

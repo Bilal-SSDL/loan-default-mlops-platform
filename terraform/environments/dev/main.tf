@@ -16,3 +16,11 @@ module "networking" {
   nat_name    = var.nat_name
 }
 
+module "storage" {
+  source            = "../../modules/storage"
+  bucket_name       = var.bucket_name
+  location          = var.region
+  bucket_versioning = var.bucket_versioning
+
+}
+

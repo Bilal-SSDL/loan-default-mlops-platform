@@ -1,5 +1,5 @@
 resource "google_compute_network" "vpc" {
-  name = var.vpc_name
+  name                    = var.vpc_name
   auto_create_subnetworks = var.auto_create_subnetworks
 
 }
@@ -10,7 +10,7 @@ resource "google_compute_subnetwork" "public_subnet" {
   region        = var.region
   network       = google_compute_network.vpc.id
 
- # depends_on = [google_compute_network.vpc]
+  # depends_on = [google_compute_network.vpc]
 
 }
 
@@ -22,7 +22,7 @@ resource "google_compute_subnetwork" "private_subnet" {
 
   private_ip_google_access = true
 
- # depends_on = [google_compute_network.vpc]
+  # depends_on = [google_compute_network.vpc]
 
 }
 
@@ -37,7 +37,7 @@ resource "google_compute_router_nat" "nat" {
   name                               = var.nat_name
   router                             = google_compute_router.router.name
   region                             = var.region
-  nat_ip_allocate_option             = "AUTO_ONLY" // GCP automatically allocate external IP addresses for NAT
+  nat_ip_allocate_option             = "AUTO_ONLY"                     // GCP automatically allocate external IP addresses for NAT
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES" //NAT covers all current and future subnets in the VPC network in this vpc
 
   depends_on = [google_compute_router.router]
