@@ -201,3 +201,49 @@ A logically isolated virtual network within Google Cloud.
 A GKE feature that allows Kubernetes workloads to securely authenticate to Google Cloud services without using service account keys.
 
 **Used in this project:** Will be configured later for secure access to GCP resources.
+
+## Artifact Registry
+
+Managed service for storing Docker images and other software artifacts.
+
+---
+
+## Terraform Remote State
+
+Terraform state stored remotely in Google Cloud Storage.
+
+---
+
+## Managed Node Pool
+
+A collection of worker nodes managed independently from the Kubernetes control plane.
+
+---
+
+## Spot VM
+
+Low-cost virtual machines that may be reclaimed by Google Cloud when capacity is required.
+
+---
+
+## Shielded Nodes
+
+GKE nodes with Secure Boot and integrity monitoring enabled.
+
+---
+
+## Autoscaling
+
+Automatically adjusts the number of worker nodes based on cluster demand.
+
+---
+
+## OAuth Scopes
+
+Defines which Google Cloud APIs a VM instance can access.
+
+---
+
+## Least Privilege
+
+Security principle of granting only the minimum permissions required.

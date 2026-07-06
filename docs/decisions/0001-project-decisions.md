@@ -1,86 +1,72 @@
-# ADR 0001 - Project Decisions
-
-## Status
-
-Accepted
 
 ---
 
-## Project
+## Infrastructure as Code
 
-Enterprise MLOps Platform for Loan Default Prediction
+### Decision
 
----
+Terraform
 
-## Cloud Provider
+### Reason
 
-Google Cloud Platform (GCP)
-
-Reason
-
-Managed Kubernetes and strong MLOps ecosystem.
+Infrastructure should be reproducible, version-controlled, modular, and reusable across environments.
 
 ---
 
-## Region
+## Terraform State
 
-us-central1
+### Decision
 
-Reason
+Google Cloud Storage Remote Backend
 
-Lower cost while supporting all required GCP services.
+### Reason
 
----
-
-## Infrastructure
-
-Manual provisioning during the learning phase.
-
-Terraform will be introduced after validating the manually created infrastructure.
+Provides centralized state management, versioning, collaboration, and disaster recovery.
 
 ---
 
-## Dataset
+## Container Registry
 
-Home Credit Default Risk
+### Decision
 
-Reason
+Google Artifact Registry
 
-Large, realistic dataset suitable for demonstrating end-to-end MLOps workflows.
+### Reason
 
----
-
-## Kubernetes
-
-Google Kubernetes Engine (GKE)
-
-Reason
-
-Managed Kubernetes reduces operational overhead while remaining production-ready.
+Provides secure, regional container image storage with native integration to GKE.
 
 ---
 
-## CI/CD
+## Kubernetes Deployment Strategy
 
-GitHub Actions
+### Decision
 
-Reason
+Separate GKE Cluster and Managed Node Pools
 
-Widely adopted, integrates well with GitHub, and suitable for platform automation.
+### Reason
 
----
-
-## GitOps
-
-ArgoCD
-
-Reason
-
-Declarative Kubernetes deployments with Git as the single source of truth.
+Allows independent lifecycle management, autoscaling, and production-grade infrastructure management.
 
 ---
 
-## Future Migration
+## Cost Optimization
 
-After completing the open-source platform, selected services will be migrated to managed GCP offerings where appropriate.
+### Decision
 
+Use Spot VMs for Development
+
+### Reason
+
+Reduce cloud costs while keeping production configuration unchanged.
+
+---
+
+## Security
+
+### Decision
+
+Least Privilege IAM
+
+### Reason
+
+Grant only the permissions required by workloads instead of broad administrative access.

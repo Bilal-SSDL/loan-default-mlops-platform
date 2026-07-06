@@ -22,10 +22,36 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "artifact_registry_repository_id" {
+  description = "name of the artifact registry repository"
+  type        = string
+}
+
+variable "artifact_registry_description" {
+  description = "description of the artifact registry repository"
+  type        = string
+}
+
+
 variable "bucket_versioning" {
   description = "whether to enable versioning for the GCS bucket"
   type        = bool
   default     = true
+}
+
+variable "cluster_name" {
+  description = "name of the GKE cluster"
+  type        = string
+}
+
+variable "service_account_name" {
+  description = "name of the service account"
+  type        = string
+}
+
+variable "service_account_id" {
+  description = "id of the service account"
+  type        = string
 }
 
 variable "bucket_location" {
@@ -73,5 +99,31 @@ variable "router_name" {
 variable "nat_name" {
   description = "name of cloud nat"
   type        = string
+}
+
+variable "node_pool_name" {
+  description = "name of the node pool"
+  type        = string
+}
+
+variable "machine_type" {
+  description = "machine type for the node pool"
+  type        = string
+}
+
+variable "min_node_count" {
+  description = "minimum number of nodes in the node pool"
+  type        = number
+}
+
+variable "max_node_count" {
+  description = "maximum number of nodes in the node pool"
+  type        = number
+}
+
+variable "spot" {
+  description = "whether to use spot instances for the node pool"
+  type        = bool
+  default     = true
 }
 

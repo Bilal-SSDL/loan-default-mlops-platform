@@ -33,5 +33,31 @@ output "bucket_url" {
   value       = module.storage.bucket_url
 }
 
+output "artifact_repositroy_name" {
+  description = "Docker images repo name"
+  value       = module.artifact_registry.repository_name
+}
+
+output "gke_cluster_name" {
+  value       = module.gke.cluster_name
+  description = "GKE Cluster Name"
+}
+
+output "gke_cluster_endpoint" {
+  value       = module.gke.cluster_endpoint
+  description = "GKE Cluster Endpoint"
+}
+
+output "service_account_name" {
+  value       = module.service_account.service_account_name
+  description = "Service Account Name"
+}
+
+output "node_pool_name" {
+  value       = module.gke.node_pool_name
+  description = "GKE Node Pool Name"
+}
+
+
 
 

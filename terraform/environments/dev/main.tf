@@ -24,3 +24,43 @@ module "storage" {
 
 }
 
+module "artifact_registry" {
+  source              = "../../modules/artifact-registry"
+  repository_id       = var.artifact_registry_repository_id
+  repository_location = var.region
+  description         = var.artifact_registry_description
+
+}
+
+module "gke" {
+  source       = "../../modules/gke"
+  cluster_name = var.cluster_name
+  region       = var.region
+  network      = module.networking.vpc_name
+  subnetwork   = module.networking.private_subnet_name
+  project_id   = var.project_id
+
+  node_pool_name = var.node_pool_name
+  machine_type   = var.machine_type
+  #node_count            = var.node_count
+  min_node_count        = var.min_node_count
+  max_node_count        = var.max_node_count
+  spot                  = var.spot
+  service_account_email = module.service_account.service_account_email
+
+
+}
+
+module "service_account" {
+  source = "../../modules/service-account"
+
+  project_id   = var.project_id
+  display_name = var.service_account_name
+  account_id   = var.service_account_id
+
+
+}
+
+
+
+

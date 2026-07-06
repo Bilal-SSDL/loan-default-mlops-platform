@@ -1,21 +1,28 @@
-# Milestone 4 - Kubernetes Platform Preparation
+# Milestone 05 - Kubernetes Platform Preparation
 
 ## Objective
 
-Prepare the GKE cluster for enterprise workloads.
+Prepare a production-ready Kubernetes platform before deploying workloads.
 
-## Resources Created
+---
 
-- argocd namespace
-- ingress-nginx namespace
-- mlflow namespace
-- kubeflow namespace
-- kserve namespace
-- monitoring namespace
-- applications namespace
+## Tasks Completed
 
-## Validation
+- Created GKE Cluster
+- Created Managed Node Pool
+- Enabled Autoscaling
+- Enabled Spot Nodes
+- Enabled Shielded Nodes
+- Connected kubectl to the cluster
 
-- Namespaces created successfully
-- Cluster inspected
-- StorageClass identified
+---
+
+## Outcome
+
+A Kubernetes cluster is now available for deploying platform services such as:
+
+- ArgoCD
+- MLflow
+- FastAPI
+- PostgreSQL
+- Monitoring Stack

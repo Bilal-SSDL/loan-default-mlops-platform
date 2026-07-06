@@ -4,40 +4,57 @@
 
 Build an enterprise-grade MLOps platform for Loan Default Prediction on Google Cloud Platform.
 
-The project focuses on MLOps engineering rather than model development. The ML model will remain intentionally simple, while the platform will demonstrate production-ready infrastructure, deployment, monitoring, and automation.
+The focus of this project is learning and implementing production-grade MLOps practices rather than building a sophisticated ML model.
 
 ---
 
 ## Current Architecture
 
+```text
 Developer
 │
 ├── GitHub Repository
 │
+├── Terraform
+│
 ├── Google Cloud Platform
 │   ├── Custom VPC
-│   ├── Public Subnet
-│   ├── Private Subnet
-│   ├── Cloud NAT
-│   ├── Artifact Registry
+│   │   ├── Public Subnet
+│   │   ├── Private Subnet
+│   │   ├── Cloud Router
+│   │   └── Cloud NAT
+│   │
 │   ├── Cloud Storage
-│   └── GKE Cluster
+│   │   └── Terraform Remote State
+│   │
+│   ├── Artifact Registry
+│   │
+│   ├── Service Account
+│   │
+│   └── Google Kubernetes Engine
+│       ├── Control Plane
+│       └── Managed Node Pool
 │
 └── Kubernetes
-    └── Namespaces
+    └── Ready for Workloads
+```
 
 ---
 
 ## Current Components
 
 | Component | Status |
-|-----------|--------|
+|------------|--------|
 | GCP Project | ✅ |
-| Networking | ✅ |
+| Custom VPC | ✅ |
+| Public & Private Subnets | ✅ |
+| Cloud Router | ✅ |
+| Cloud NAT | ✅ |
+| Remote Terraform State | ✅ |
 | Artifact Registry | ✅ |
-| Cloud Storage | ✅ |
 | Service Account | ✅ |
 | GKE Cluster | ✅ |
+| Managed Node Pool | ✅ |
 | GitOps | Planned |
 | ML Platform | Planned |
 | Monitoring | Planned |
@@ -46,20 +63,26 @@ Developer
 
 ## Future Architecture
 
-Terraform
-        │
-        ▼
-Google Cloud Infrastructure
-        │
-        ▼
-GKE Cluster
-        │
-        ▼
+```text
+GitHub
+    │
+    ▼
+GitHub Actions
+    │
+    ▼
+Artifact Registry
+    │
+    ▼
 ArgoCD
-        │
-        ▼
-MLflow
-Kubeflow
-KServe
-Prometheus
-Grafana
+    │
+    ▼
+Google Kubernetes Engine
+    ├── FastAPI
+    ├── MLflow
+    ├── PostgreSQL
+    ├── MinIO
+    ├── Prometheus
+    ├── Grafana
+    ├── KServe
+    └── Monitoring Stack
+```
