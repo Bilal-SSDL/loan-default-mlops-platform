@@ -6,4 +6,3 @@ resource "google_artifact_registry_repository" "image_repo" {
   format = "DOCKER"
 
 }
-
