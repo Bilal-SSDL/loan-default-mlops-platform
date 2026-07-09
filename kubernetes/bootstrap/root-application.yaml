@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/bilal-ssdl/loan-default-mlops-platform.git
+    repoURL: https://github.com/Bilal-SSDL/loan-default-mlops-platform.git
     targetRevision: HEAD
     path: kubernetes/applications
 
@@ -22,5 +22,5 @@ spec:
       prune: true
       selfHeal: true
   
-  syncOptions:
-    - CreateNamespace=true
+    syncOptions:
+      - CreateNamespace=true
