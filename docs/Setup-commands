@@ -38,3 +38,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 # Port Forward ArgoCD
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
+# Deploy app of apps application file
+kubectl apply -f kubernetes/bootstrap/root-application.yaml
+
+
