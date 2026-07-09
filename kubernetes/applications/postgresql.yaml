@@ -1,11 +1,13 @@
-apiVersion: argoargo/v1alpha1
+apiVersion: argoproj.io/v1alpha1
 kind: Application
+
 metadata:
   name: postgresql
   namespace: argocd
 
 spec:
   project: default
+
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql
@@ -14,10 +16,11 @@ spec:
     helm:
       values: |
         auth:
-          PostgresPassword: postgres
+          postgresPassword: postgres
           username: mlflow
           password: mlflow
           database: mlflow
+
   destination:
     server: https://kubernetes.default.svc
     namespace: mlflow
@@ -26,6 +29,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    
+
     syncOptions:
       - CreateNamespace=true
