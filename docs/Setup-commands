@@ -1,0 +1,40 @@
+# Authenticate with GCP
+gcloud auth login
+
+# Set the project
+gcloud config set project lendo-dr-417012
+
+# Get GKE credentials
+gcloud container clusters get-credentials lendo-app-gke-cluster \
+  --region us-central1
+
+# Create Namespaces
+kubectl create namespace ingress-nginx
+kubectl create namespace argocd
+kubectl create namespace mlflow
+kubectl create namespace monitoring
+kubectl create namespace application
+
+# Add Helm Repositories
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo add argo https://argoproj.github.io/argo-helm
+
+# Update Helm Repositories
+helm repo update
+
+# Install Ingress NGINX
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx
+
+# Install ArgoCD
+helm install argocd argo/argo-cd \
+  --namespace argocd
+
+# Get ArgoCD Initial Admin Password
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d
+
+# Port Forward ArgoCD
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+

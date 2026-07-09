@@ -174,7 +174,16 @@ Displays Secrets created for ArgoCD components.
 ```bash
 kubectl get events -n argocd --sort-by=.metadata.creationTimestamp
 ```
+```bash
+k port-forward svc/argocd-server -n argocd 8080:443
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret \
+    -o jsonpath="{.data.password}" | base64 -d
+```
+
 
 Purpose
 
 Shows recent events for troubleshooting.
+
