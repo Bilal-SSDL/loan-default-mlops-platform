@@ -77,8 +77,8 @@ By the end of this project, the platform will include:
 
 ## Phase 1 - Platform Services
 
-- PostgreSQL
-- MinIO
+- ✅ PostgreSQL
+- ✅ MinIO
 - MLflow
 
 ---
