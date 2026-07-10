@@ -23,6 +23,6 @@ service_account_id   = "lendo-app-service-account"
 
 node_pool_name = "lendo-app-primary-node-pool"
 machine_type   = "e2-standard-2"
-min_node_count = 1
+min_node_count = 3
 max_node_count = 3
 spot           = true

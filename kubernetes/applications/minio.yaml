@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.min.io/
+    repoURL: https://min.io
     chart: minio
     targetRevision: 5.4.0
     helm:
@@ -25,8 +25,17 @@ spec:
         persistence:
           enabled: true
           size: 10Gi
+
+        # Strip down resource requests so the pods fit into your 25% used nodes
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
   destination:
-    server: https://kubernetes.default.svc
+    server: https://default.svc
     namespace: mlflow
   syncPolicy:
     automated:
