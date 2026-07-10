@@ -6,33 +6,27 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://charts.min.io/
     chart: minio
-    targetRevision: 17.0.21
+    targetRevision: 5.4.0
     helm:
       values: |
         mode: standalone
+        replicas: 1
 
-        # Redirect to the Bitnami Legacy public repository
-        image:
-          repository: bitnamilegacy/minio
-        
-        auth:
-          rootUser: admin
-          rootPassword: admin123
+        rootUser: rootuser
+        rootPassword: rootpass123
 
-        provisioning:
-          enabled: true
-          buckets:
-            - name: mlflow
-              policy: none
-              purge: false
+        buckets:
+          - name: mlflow
+            policy: none
+            purge: false
 
         persistence:
           enabled: true
           size: 10Gi
   destination:
-    server: https://default.svc
+    server: https://kubernetes.default.svc
     namespace: mlflow
   syncPolicy:
     automated:
