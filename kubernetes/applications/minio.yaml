@@ -1,40 +1,42 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-
 metadata:
   name: minio
   namespace: argocd
-
 spec:
   project: default
-
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: minio
-    targetRevision: 17.0.19
-
+    targetRevision: 17.0.21
     helm:
       values: |
+        mode: standalone
+
+        # Redirect to the Bitnami Legacy public repository
+        image:
+          repository: bitnamilegacy/minio
+        
         auth:
           rootUser: admin
           rootPassword: admin123
 
-        defaultBuckets: mlflow
+        provisioning:
+          enabled: true
+          buckets:
+            - name: mlflow
+              policy: none
+              purge: false
 
         persistence:
           enabled: true
           size: 10Gi
-
-        mode: standalone
-
   destination:
-    server: https://kubernetes.default.svc
+    server: https://default.svc
     namespace: mlflow
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
     syncOptions:
       - CreateNamespace=true
