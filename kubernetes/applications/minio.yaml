@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://min.io
+    repoURL: https://charts.min.io/
     chart: minio
     targetRevision: 5.4.0
     helm:
@@ -35,7 +35,7 @@ spec:
             memory: "512Mi"
             cpu: "500m"
   destination:
-    server: https://default.svc
+    server: https://kubernetes.default.svc
     namespace: mlflow
   syncPolicy:
     automated:
