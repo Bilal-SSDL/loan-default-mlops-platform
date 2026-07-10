@@ -78,7 +78,7 @@ By the end of this project, the platform will include:
 ## Phase 1 - Platform Services
 
 - ✅ PostgreSQL
-- ✅ MinIO
+- ✅ MinIO # we will use GCS bucket instead as MinIO need S3 and we are on GCP
 - MLflow
 
 ---
@@ -171,7 +171,7 @@ ArgoCD (GitOps)
     ▼
 GKE Cluster
     ├── PostgreSQL
-    ├── MinIO
+    ├── GCS
     ├── MLflow
     ├── Kubeflow
     ├── KServe
