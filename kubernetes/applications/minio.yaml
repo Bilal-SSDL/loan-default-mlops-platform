@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: oci://registry-1.docker.io/bitnamicharts
     chart: minio
-    targetRevision: 17.0.18
+    targetRevision: 17.0.21
 
     helm:
       values: |
