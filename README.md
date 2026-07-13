@@ -1,8 +1,30 @@
-# MLOps Platform on Google Cloud Platform (GCP)
+# Enterprise MLOps Platform on Google Cloud Platform (GCP) — Loan Default Prediction
+
+An end-to-end, production-style MLOps platform built on **Google Cloud Platform (GCP)** using modern cloud-native, DevOps, and MLOps practices with GitOps workflows.
+
+The primary focus of this project is **MLOps engineering**: infrastructure automation, GitOps, CI/CD, model lifecycle management, deployment, monitoring, and production best practices.
+
+---
 
 ## Project Goal
 
-Build an end-to-end, production-oriented MLOps platform on Google Cloud Platform using modern cloud-native technologies and GitOps practices.
+Build an end-to-end, production-ready MLOps platform for a **Loan Default Prediction** model on Google Cloud Platform using modern cloud-native technologies and GitOps practices.
+
+The ML model itself will remain intentionally simple while the platform demonstrates a complete production workflow.
+
+By the end of this project, the platform will include:
+
+- Terraform
+- Google Cloud Platform
+- Kubernetes (GKE)
+- GitOps (ArgoCD)
+- Docker
+- GitHub Actions
+- MLflow
+- Kubeflow
+- KServe
+- Monitoring & Logging
+- Production deployment practices
 
 ---
 
@@ -10,26 +32,38 @@ Build an end-to-end, production-oriented MLOps platform on Google Cloud Platform
 
 ## Infrastructure
 
-- Terraform
-- Remote State Backend
+- GCP Project
+- Terraform (modular structure, reusable modules, environment-based layout)
+- Remote State Backend (GCS)
 - Custom VPC
-- Private/Public Subnets
+- Public & Private Subnets
 - Cloud Router
 - Cloud NAT
 - Artifact Registry
 - GCS Bucket
+- Service Account
 - GKE Cluster
-- Managed Node Pool
+- Managed / Custom Node Pool
 - Shielded Nodes
 
 ---
 
 ## Kubernetes Platform
 
+- Cluster Access
 - kubectl
 - Helm
 - Namespaces
-- ArgoCD
+- Ingress NGINX
+
+---
+
+## GitOps
+
+- ArgoCD Installation
+- ArgoCD UI
+- First GitOps Application
+- GitOps Repository Structure
 - App of Apps Pattern
 - GitOps Workflow
 
@@ -41,6 +75,8 @@ Build an end-to-end, production-oriented MLOps platform on Google Cloud Platform
 - MLflow
 - GCS Artifact Store
 - Custom MLflow Docker Image
+
+> Note: MinIO was evaluated but we use a GCS bucket instead, since MinIO targets the S3 API and we are on GCP.
 
 ---
 
@@ -86,12 +122,13 @@ Google Kubernetes Engine
 
 ---
 
-## Phase 2 - Training Pipeline
+## Phase 2 - Training Pipeline & Experiment Tracking
 
 - Build sample ML training pipeline
 - Track experiments with MLflow
 - Store artifacts in GCS
 - Register trained models
+- Model versioning
 
 ---
 
@@ -104,7 +141,18 @@ Google Kubernetes Engine
 
 ---
 
-## Phase 4 - Kubeflow
+## Phase 4 - Model Serving
+
+- FastAPI Inference API
+- KServe
+- Deploy inference service
+- Serve models from MLflow Registry
+- Perform online inference
+- Canary Deployments
+
+---
+
+## Phase 5 - Workflow Orchestration (Kubeflow)
 
 - Install Kubeflow Pipelines
 - Deploy Kubeflow on GKE
@@ -114,26 +162,7 @@ Google Kubernetes Engine
 
 ---
 
-## Phase 5 - KServe
-
-- Install KServe
-- Deploy inference service
-- Serve models from MLflow Registry
-- Perform online inference
-
----
-
-## Phase 6 - Monitoring
-
-- Prometheus
-- Grafana
-- Kubernetes Monitoring
-- MLflow Metrics
-- KServe Metrics
-
----
-
-## Phase 7 - CI/CD
+## Phase 6 - CI/CD
 
 - GitHub Actions
 - Build Docker Images
@@ -143,16 +172,48 @@ Google Kubernetes Engine
 
 ---
 
-## Phase 8 - Security & Production Improvements
+## Phase 7 - Monitoring
+
+- Prometheus
+- Grafana
+- Kubernetes Monitoring / Metrics
+- Application Metrics
+- MLflow Metrics
+- KServe Metrics
+- Alerts
+
+---
+
+## Phase 8 - Logging
+
+- Loki
+- Fluent Bit
+- Log Aggregation
+
+---
+
+## Phase 9 - Security
 
 - Workload Identity
 - Remove Service Account Keys
 - Secret Manager
 - External Secrets
+- Secrets Management
 - TLS & HTTPS
 - Network Policies
 - RBAC Hardening
+
+---
+
+## Phase 10 - Production Improvements
+
+- Horizontal Pod Autoscaler (HPA)
+- Resource Requests & Limits
+- Pod Disruption Budgets
+- Multi-Environment Deployment (Dev/Prod)
 - High Availability
+- Backup & Restore
+- Disaster Recovery
 - Production Optimizations
 
 ---
@@ -197,195 +258,7 @@ Inference API
 
 ---
 
-# Project Progress
-
-| Component | Status |
-|-----------|--------|
-| Infrastructure | ✅ Completed |
-| Kubernetes Platform | ✅ Completed |
-| GitOps | ✅ Completed |
-| MLflow Deployment | ✅ Completed |
-| MLflow Verification | ⏳ Pending |
-| Training Pipeline | ⏳ Pending |
-| Model Registry | ⏳ Pending |
-| Kubeflow | ⏳ Pending |
-| KServe | ⏳ Pending |
-| Monitoring | ⏳ Pending |
-| CI/CD | ⏳ Pending |
-| Security Improvements | ⏳ Planned (Iteration 2) |
-
-**Overall Progress:** **~70% Complete**
-
-
-
-# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
-
-# Enterprise MLOps Platform - Loan Default Prediction
-
-An end-to-end, production-style MLOps platform built on **Google Cloud Platform (GCP)** using modern DevOps and MLOps practices.
-
-The primary focus of this project is **MLOps engineering**, infrastructure automation, GitOps, CI/CD, model lifecycle management, deployment, monitoring, and production best practices.
-
----
-
-# Project Goal
-
-Build a production-ready MLOps platform for a **Loan Default Prediction** model.
-
-The ML model itself will remain intentionally simple while the platform demonstrates a complete production workflow.
-
-By the end of this project, the platform will include:
-
-- Terraform
-- Google Cloud Platform
-- Kubernetes (GKE)
-- GitOps (ArgoCD)
-- Docker
-- GitHub Actions
-- MLflow
-- Kubeflow
-- KServe
-- Monitoring & Logging
-- Production deployment practices
-
----
-
-# Current Progress
-
-## Infrastructure
-
-- ✅ GCP Project
-- ✅ Custom VPC
-- ✅ Public & Private Subnets
-- ✅ Cloud Router
-- ✅ Cloud NAT
-- ✅ Artifact Registry
-- ✅ GCS Remote Terraform State
-- ✅ Service Account
-- ✅ GKE Cluster
-- ✅ Custom Node Pool
-
----
-
-## Terraform
-
-- ✅ Modular Structure
-- ✅ Remote State
-- ✅ Environment-based Structure
-- ✅ Reusable Modules
-
----
-
-## Kubernetes
-
-- ✅ Cluster Access
-- ✅ Namespaces
-- ✅ Helm
-- ✅ Ingress NGINX
-
----
-
-## GitOps
-
-- ✅ ArgoCD Installation
-- ✅ ArgoCD UI
-- ✅ First GitOps Application
-- ✅ GitOps Repository Structure
-- ✅ App of Apps Pattern
-
----
-
-# Remaining Roadmap
-
-## Phase 1 - Platform Services
-
-- ✅ PostgreSQL
-- ✅ MinIO # we will use GCS bucket instead as MinIO need S3 and we are on GCP
-- ✅ MLflow
-
----
-
-## Phase 2 - MLOps Components
-
-- Model Training Pipeline
-- Experiment Tracking
-- Model Registry
-- Model Versioning
-
----
-
-## Phase 3 - Model Serving
-
-- FastAPI Inference API
-- KServe
-- Canary Deployments
-
----
-
-## Phase 4 - Workflow Orchestration
-
-- Kubeflow Pipelines
-- Automated Training Pipeline
-
----
-
-## Phase 5 - CI/CD
-
-- GitHub Actions
-- Docker Image Build
-- Push Images to Artifact Registry
-- GitOps-based Deployment
-
----
-
-## Phase 6 - Monitoring
-
-- Prometheus
-- Grafana
-- Application Metrics
-- Kubernetes Metrics
-- Alerts
-
----
-
-## Phase 7 - Logging
-
-- Loki
-- Fluent Bit
-- Log Aggregation
-
----
-
-## Phase 8 - Security
-
-- RBAC
-- Secrets Management
-- Workload Identity
-- Network Policies
-
----
-
-## Phase 9 - Production Improvements
-
-- Horizontal Pod Autoscaler (HPA)
-- Resource Requests & Limits
-- Pod Disruption Budgets
-- Multi-Environment Deployment (Dev/Prod)
-- Backup & Restore
-- Disaster Recovery
-
----
-
-# Final Architecture
+# Final Architecture (Component View)
 
 ```text
 GitHub
@@ -455,6 +328,27 @@ Monitoring & Logging
 
 ---
 
+# Project Progress
+
+| Component | Status |
+|-----------|--------|
+| Infrastructure | ✅ Completed |
+| Kubernetes Platform | ✅ Completed |
+| GitOps | ✅ Completed |
+| MLflow Deployment | ✅ Completed |
+| MLflow Verification | ⏳ Pending |
+| Training Pipeline | ⏳ Pending |
+| Model Registry | ⏳ Pending |
+| Kubeflow | ⏳ Pending |
+| KServe | ⏳ Pending |
+| Monitoring | ⏳ Pending |
+| CI/CD | ⏳ Pending |
+| Security Improvements | ⏳ Planned (Iteration 2) |
+
+**Overall Progress:** **~70% Complete**
+
+---
+
 # Repository Structure
 
 ```text
@@ -499,8 +393,11 @@ Project documentation is available under the `docs/` directory and includes:
 
 **Current Phase:** Platform Services Deployment (PostgreSQL → MinIO → MLflow)
 
+---
+
 # Iteration 1 (Current)
-** Focus on functionality:**
+
+**Focus on functionality:**
 
 ✅ Terraform infrastructure
 
@@ -516,50 +413,40 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ MLflow
 
-✅ Training pipeline
+⏳ Training pipeline
 
-✅ Model Registry
+⏳ Model Registry
 
-✅ KServe
+⏳ KServe
 
-✅ Monitoring
+⏳ Monitoring
 
-✅ CI/CD
+⏳ CI/CD
 
-✅ End-to-end prediction flow
+⏳ End-to-end prediction flow
 
 For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
 
 This is acceptable for a learning project, provided we clearly document that it's temporary.
 
+---
+
 # Iteration 2 (Hardening)
+
 After the platform is fully working, we'll improve it by:
 
-Workload Identity Federation
-
-Remove service account keys completely
-
-Secret Manager integration
-
-External Secrets Operator
-
-TLS
-
-Domain name
-
-Network Policies
-
-RBAC refinement
-
-Pod Security Standards
-
-Resource requests/limits tuning
-
-High Availability
-
-GitHub Actions OIDC authentication
-
-Production-grade monitoring and alerting
+- Workload Identity Federation
+- Remove service account keys completely
+- Secret Manager integration
+- External Secrets Operator
+- TLS
+- Domain name
+- Network Policies
+- RBAC refinement
+- Pod Security Standards
+- Resource requests/limits tuning
+- High Availability
+- GitHub Actions OIDC authentication
+- Production-grade monitoring and alerting
 
 At that point, the project becomes much closer to a production-grade reference architecture.
-
