@@ -1,5 +1,5 @@
 
-
+## Setup Everything from Scratch
 # Authenticate with GCP
 gcloud auth login
 
@@ -46,6 +46,23 @@ helm upgrade argocd argo/argo-cd \
   --set server.extraArgs="{--insecure}"
 kubectl apply -f kubernetes/infrastructure/ingress/argocd-ingress.yaml
 
+# Setup service account and secret
+mkdir -p secrets
+
+gcloud iam service-accounts keys create \
+./secrets/mlflow-sa-key.json \
+--iam-account=lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com
+
+gcloud projects add-iam-policy-binding lendo-dr-417012 \
+  --member="serviceAccount:lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com" \
+  --role="roles/artifactregistry.reader"
+
+kubectl create secret generic gcp-service-account \
+--from-file=key.json=./secrets/mlflow-sa-key.json \
+-n mlflow
+
+# ###################################
+
 # Deploy app of apps application file
 kubectl apply -f kubernetes/bootstrap/root-application.yaml
 
@@ -59,16 +76,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ### Core components and project setup completed
 
-# Setup service account and secret
-mkdir -p secrets
 
-gcloud iam service-accounts keys create \
-./secrets/mlflow-sa-key.json \
---iam-account=lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com
-
-kubectl create secret generic gcp-service-account \
---from-file=key.json=./secrets/mlflow-sa-key.json \
--n mlflow
 
 # Setup mlflow
 cd platform

@@ -1,3 +1,234 @@
+# MLOps Platform on Google Cloud Platform (GCP)
+
+## Project Goal
+
+Build an end-to-end, production-oriented MLOps platform on Google Cloud Platform using modern cloud-native technologies and GitOps practices.
+
+---
+
+# Completed
+
+## Infrastructure
+
+- Terraform
+- Remote State Backend
+- Custom VPC
+- Private/Public Subnets
+- Cloud Router
+- Cloud NAT
+- Artifact Registry
+- GCS Bucket
+- GKE Cluster
+- Managed Node Pool
+- Shielded Nodes
+
+---
+
+## Kubernetes Platform
+
+- kubectl
+- Helm
+- Namespaces
+- ArgoCD
+- App of Apps Pattern
+- GitOps Workflow
+
+---
+
+## Platform Services
+
+- PostgreSQL
+- MLflow
+- GCS Artifact Store
+- Custom MLflow Docker Image
+
+---
+
+## CI/CD
+
+- GitHub Repository
+- ArgoCD Auto Sync
+
+---
+
+# Current Architecture
+
+```text
+Developer
+    │
+    ▼
+GitHub Repository
+    │
+    ▼
+ArgoCD
+    │
+    ▼
+Google Kubernetes Engine
+    │
+    ├──────────────► PostgreSQL
+    │
+    ├──────────────► GCS Bucket
+    │
+    └──────────────► MLflow
+```
+
+---
+
+# Remaining Roadmap
+
+## Phase 1 - MLflow Verification
+
+- Create experiments
+- Log parameters
+- Log metrics
+- Log artifacts
+- Verify artifacts in GCS
+
+---
+
+## Phase 2 - Training Pipeline
+
+- Build sample ML training pipeline
+- Track experiments with MLflow
+- Store artifacts in GCS
+- Register trained models
+
+---
+
+## Phase 3 - MLflow Model Registry
+
+- Register models
+- Manage model versions
+- Transition model stages
+- Load models from registry
+
+---
+
+## Phase 4 - Kubeflow
+
+- Install Kubeflow Pipelines
+- Deploy Kubeflow on GKE
+- Build reusable ML pipelines
+- Integrate Kubeflow with MLflow
+- Automate training workflow
+
+---
+
+## Phase 5 - KServe
+
+- Install KServe
+- Deploy inference service
+- Serve models from MLflow Registry
+- Perform online inference
+
+---
+
+## Phase 6 - Monitoring
+
+- Prometheus
+- Grafana
+- Kubernetes Monitoring
+- MLflow Metrics
+- KServe Metrics
+
+---
+
+## Phase 7 - CI/CD
+
+- GitHub Actions
+- Build Docker Images
+- Push Images to Artifact Registry
+- GitOps Deployment with ArgoCD
+- Automated Pipeline Deployment
+
+---
+
+## Phase 8 - Security & Production Improvements
+
+- Workload Identity
+- Remove Service Account Keys
+- Secret Manager
+- External Secrets
+- TLS & HTTPS
+- Network Policies
+- RBAC Hardening
+- High Availability
+- Production Optimizations
+
+---
+
+# Target Architecture
+
+```text
+                     GitHub
+                        │
+                        ▼
+                  GitHub Actions
+                        │
+                        ▼
+                Artifact Registry
+                        │
+                        ▼
+                     ArgoCD
+                        │
+                        ▼
+               Google Kubernetes Engine
+                        │
+      ┌─────────────────┼─────────────────┐
+      │                 │                 │
+      ▼                 ▼                 ▼
+ PostgreSQL          MLflow          Kubeflow
+      │                 │                 │
+      │                 │                 ▼
+      │                 │        Training Pipelines
+      │                 │
+      ▼                 ▼
+Model Metadata      GCS Bucket
+      │
+      ▼
+MLflow Model Registry
+      │
+      ▼
+    KServe
+      │
+      ▼
+Inference API
+```
+
+---
+
+# Project Progress
+
+| Component | Status |
+|-----------|--------|
+| Infrastructure | ✅ Completed |
+| Kubernetes Platform | ✅ Completed |
+| GitOps | ✅ Completed |
+| MLflow Deployment | ✅ Completed |
+| MLflow Verification | ⏳ Pending |
+| Training Pipeline | ⏳ Pending |
+| Model Registry | ⏳ Pending |
+| Kubeflow | ⏳ Pending |
+| KServe | ⏳ Pending |
+| Monitoring | ⏳ Pending |
+| CI/CD | ⏳ Pending |
+| Security Improvements | ⏳ Planned (Iteration 2) |
+
+**Overall Progress:** **~70% Complete**
+
+
+
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
 # Enterprise MLOps Platform - Loan Default Prediction
 
 An end-to-end, production-style MLOps platform built on **Google Cloud Platform (GCP)** using modern DevOps and MLOps practices.
@@ -79,7 +310,7 @@ By the end of this project, the platform will include:
 
 - ✅ PostgreSQL
 - ✅ MinIO # we will use GCS bucket instead as MinIO need S3 and we are on GCP
-- MLflow
+- ✅ MLflow
 
 ---
 
