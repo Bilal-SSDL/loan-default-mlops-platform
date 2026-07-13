@@ -1,5 +1,12 @@
+
+
 # Authenticate with GCP
 gcloud auth login
+
+# deploy terraform
+
+cd terraform/environments/dev
+terraform apply
 
 # Set the project
 gcloud config set project lendo-dr-417012
@@ -30,6 +37,18 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
 # Install ArgoCD
 helm install argocd argo/argo-cd \
   --namespace argocd
+# ##################################
+
+# Ingress setup for Argocd
+helm upgrade argocd argo/argo-cd \
+  -n argocd \
+  --reuse-values \
+  --set server.extraArgs="{--insecure}"
+kubectl apply -f kubernetes/infrastructure/ingress/argocd-ingress.yaml
+
+# Deploy app of apps application file
+kubectl apply -f kubernetes/bootstrap/root-application.yaml
+
 
 # Get ArgoCD Initial Admin Password
 kubectl -n argocd get secret argocd-initial-admin-secret \
@@ -38,14 +57,29 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 # Port Forward ArgoCD
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-# Deploy app of apps application file
-kubectl apply -f kubernetes/bootstrap/root-application.yaml
+### Core components and project setup completed
 
-# Ingress setup for Argocd
-helm upgrade argocd argo/argo-cd \
-  -n argocd \
-  --reuse-values \
-  --set server.extraArgs="{--insecure}"
-kubectl apply -f kubernetes/infrastructure/ingress/argocd-ingress.yaml
+# Setup service account and secret
+mkdir -p secrets
+
+gcloud iam service-accounts keys create \
+./secrets/mlflow-sa-key.json \
+--iam-account=lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com
+
+kubectl create secret generic gcp-service-account \
+--from-file=key.json=./secrets/mlflow-sa-key.json \
+-n mlflow
+
+# Setup mlflow
+cd platform
+sudo docker build -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0 ./mlflow
+gcloud auth configure-docker us-central1-docker.pkg.dev
+docker push us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0
+
+
+
+
+
+
 
 

@@ -1,5 +1,9 @@
 datasets/
 
+# ---- Secrets ----
+# Service-account keys and other credentials must never be committed
+secrets/
+
 # ---- Terraform ----
 
 # Local .terraform directories (provider binaries, module cache)

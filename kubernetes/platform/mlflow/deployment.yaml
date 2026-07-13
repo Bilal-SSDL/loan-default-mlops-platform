@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow
+  namespace: mlflow
+  labels:
+    app: mlflow
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: mlflow
+    template:
+      metadata:
+        labels:
+          app: mlflow
+      spec:
+        serviceAccountname: mlflow
+        containers:
+          - name: mlflow
+            image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.1
+            ports:
+              - containerPort: 5000
+            imagePullPolicy: Always
+            env:
+              - name: BACKEND_STORE_URI
+                value: postgresql+psycopg2://mlflow:mlflow@postgresql.mlflow.svc.cluster.local:5432/mlflow
+              - name: ARTIFACT_ROOT
+                value: gs://lendo-mlops-terraform-state/mlflow
+              - name: GOOGLE_APPLICATION_CREDENTIALS
+                value: /var/secrets/google/key.json
+            volumeMounts:
+              - name: gcp-key
+                mountPath: /var/secrets/google
+                readOnly: true
+        volumes:
+          - name: gcp-key
+            secret:
+              secretName: gcp-service-account

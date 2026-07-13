@@ -267,3 +267,68 @@ Project documentation is available under the `docs/` directory and includes:
 **GitOps Foundation:** ✅ Complete
 
 **Current Phase:** Platform Services Deployment (PostgreSQL → MinIO → MLflow)
+
+# Iteration 1 (Current)
+** Focus on functionality:**
+
+✅ Terraform infrastructure
+
+✅ GKE
+
+✅ Artifact Registry
+
+✅ GCS
+
+✅ ArgoCD
+
+✅ PostgreSQL
+
+✅ MLflow
+
+✅ Training pipeline
+
+✅ Model Registry
+
+✅ KServe
+
+✅ Monitoring
+
+✅ CI/CD
+
+✅ End-to-end prediction flow
+
+For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
+
+This is acceptable for a learning project, provided we clearly document that it's temporary.
+
+# Iteration 2 (Hardening)
+After the platform is fully working, we'll improve it by:
+
+Workload Identity Federation
+
+Remove service account keys completely
+
+Secret Manager integration
+
+External Secrets Operator
+
+TLS
+
+Domain name
+
+Network Policies
+
+RBAC refinement
+
+Pod Security Standards
+
+Resource requests/limits tuning
+
+High Availability
+
+GitHub Actions OIDC authentication
+
+Production-grade monitoring and alerting
+
+At that point, the project becomes much closer to a production-grade reference architecture.
+
