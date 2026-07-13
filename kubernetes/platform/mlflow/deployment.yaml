@@ -15,7 +15,7 @@ spec:
       labels:
         app: mlflow
     spec:
-      serviceAccountName: mlflow
+      serviceAccountName: lendo-app-service-account
       containers:
         - name: mlflow
           image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.1
