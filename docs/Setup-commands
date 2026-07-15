@@ -63,6 +63,12 @@ kubectl create secret generic gcp-service-account \
 
 # ###################################
 
+# Setup mlflow
+cd platform
+sudo docker build -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0 ./mlflow
+gcloud auth configure-docker us-central1-docker.pkg.dev
+docker push us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0
+
 # Deploy app of apps application file
 kubectl apply -f kubernetes/bootstrap/root-application.yaml
 
@@ -78,11 +84,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 
 
-# Setup mlflow
-cd platform
-sudo docker build -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0 ./mlflow
-gcloud auth configure-docker us-central1-docker.pkg.dev
-docker push us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0
+
 
 
 

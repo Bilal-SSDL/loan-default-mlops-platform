@@ -70,3 +70,6 @@ Least Privilege IAM
 ### Reason
 
 Grant only the permissions required by workloads instead of broad administrative access.
+
+### 
+For the first implementation, MLflow authenticates to GCS using a Google Service Account key stored as a Kubernetes Secret.
