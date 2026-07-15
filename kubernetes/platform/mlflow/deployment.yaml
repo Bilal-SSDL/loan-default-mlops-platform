@@ -18,7 +18,7 @@ spec:
       serviceAccountName: lendo-app-service-account
       containers:
         - name: mlflow
-          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.1
+          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0
           ports:
             - containerPort: 5000
           imagePullPolicy: Always
