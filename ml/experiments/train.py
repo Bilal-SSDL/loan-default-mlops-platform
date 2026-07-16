@@ -1,6 +1,37 @@
+# Responsibilities:
+
+# Load processed data
+
+# Train baseline model (Random Forest is a good starting point)
+
+# Log to MLflow:
+
+# Parameters
+
+# Metrics
+
+# Model
+
+# Feature importance (optional)
+
+# Metrics to log:
+
+# Accuracy
+
+# Precision
+
+# Recall
+
+# F1 Score
+
+# ROC-AUC
+
+
+
+
 import mlflow
 import mlflow.sklearn
-
+    
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
