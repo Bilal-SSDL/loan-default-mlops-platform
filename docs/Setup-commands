@@ -1,12 +1,14 @@
 
 ## Setup Everything from Scratch
-# Authenticate with GCP
-gcloud auth login
+
 
 # deploy terraform
 
 cd terraform/environments/dev
 terraform apply
+
+# Authenticate with GCP
+gcloud auth login
 
 # Set the project
 gcloud config set project lendo-dr-417012
@@ -56,6 +58,10 @@ gcloud iam service-accounts keys create \
 gcloud projects add-iam-policy-binding lendo-dr-417012 \
   --member="serviceAccount:lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com" \
   --role="roles/artifactregistry.reader"
+
+gcloud storage buckets add-iam-policy-binding gs://lendo-mlops-terraform-state \
+    --member="serviceAccount:lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com" \
+    --role="roles/storage.objectUser"
 
 kubectl create secret generic gcp-service-account \
 --from-file=key.json=./secrets/mlflow-sa-key.json \

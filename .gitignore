@@ -32,3 +32,17 @@ terraform.rc
 *.tfplan
 
 # NOTE: .terraform.lock.hcl is intentionally NOT ignored - it should be committed.
+
+# ---- Python ----
+
+# Environment variable files (may contain credentials / config)
+.env
+*.env
+
+# Virtual environments
+.venv/
+venv/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
