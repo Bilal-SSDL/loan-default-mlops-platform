@@ -67,6 +67,25 @@ if "ID" in df.columns:
 
 
 # ----------------------------
+# Drop Leakage Columns
+# ----------------------------
+# These fields are missing almost exclusively for defaulted loans (e.g.
+# rate_of_interest / property_value / LTV are NaN for ~all Status==1 rows), so
+# their missingness (and thus their imputed value) effectively encodes the
+# target and yields an unrealistic ~1.0 ROC-AUC. They are also largely known
+# only after approval, so they would not be available at scoring time anyway.
+LEAKAGE_COLUMNS = [
+    "rate_of_interest",
+    "Interest_rate_spread",
+    "Upfront_charges",
+    "property_value",
+    "LTV",
+    "dtir1",
+]
+df.drop(columns=[c for c in LEAKAGE_COLUMNS if c in df.columns], inplace=True)
+
+
+# ----------------------------
 # Target Variable
 # ----------------------------
 TARGET = "Status"

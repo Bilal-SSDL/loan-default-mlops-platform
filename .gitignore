@@ -54,3 +54,17 @@ __pycache__/
 ml/data/raw/*.csv
 ml/data/processed/*.csv
 ml/**/*.pkl
+
+# Generated model outputs & evaluation artifacts (produced by train/evaluate and
+# logged to MLflow). Keep only the directory placeholders, not the outputs.
+ml/models/*
+!ml/models/.gitkeep
+ml/artifacts/*
+!ml/artifacts/.gitkeep
+
+# Local MLflow runs / backend store
+mlruns/
+mlflow.db
+
+# Scratch / smoke-test scripts (never committed)
+*_smoke.py
