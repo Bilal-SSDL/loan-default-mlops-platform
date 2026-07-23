@@ -1,4 +1,4 @@
-# Milestone 16 - MLflow Verification
+# Milestone 15 - MLflow Verification
 
 ## Objective
 
@@ -21,7 +21,7 @@ MLflow is an open-source MLOps platform that manages the entire machine learning
 ## Commands
 
 ```bash
-cd ml/experiments
+cd ml
 
 python3 -m venv .venv
 
@@ -29,9 +29,13 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 
+# Expose the in-cluster MLflow tracking server locally
 kubectl port-forward svc/mlflow 5000:5000 -n mlflow
 
-python train.py
+# Point the pipeline at the forwarded tracking server, then run it
+export MLFLOW_TRACKING_URI=http://localhost:5000
+python src/preprocess.py
+python src/train.py
 ```
 
 ---
@@ -42,7 +46,8 @@ python train.py
 - Run created
 - Parameters logged
 - Metrics logged
-- Model logged
+- Model logged and registered as `LoanDefaultModel`
+- `champion` alias pointed at the new version
 - Artifacts stored in GCS
 - Metadata stored in PostgreSQL
 

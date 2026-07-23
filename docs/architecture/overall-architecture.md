@@ -36,8 +36,17 @@ Developer
 │       └── Managed Node Pool
 │
 └── Kubernetes
-    └── Ready for Workloads
+    ├── Ingress NGINX
+    ├── ArgoCD (App-of-Apps GitOps)
+    └── ML Platform (namespace: mlflow)
+        ├── PostgreSQL (MLflow backend store)
+        ├── MLflow Tracking Server (+ Model Registry)
+        └── GCS Artifact Store
 ```
+
+Training pipeline, experiment tracking, and Model Registry (`LoanDefaultModel@champion`)
+are working against this MLflow deployment. The next workload is the FastAPI
+inference service (Milestone 16).
 
 ---
 
@@ -55,8 +64,14 @@ Developer
 | Service Account | ✅ |
 | GKE Cluster | ✅ |
 | Managed Node Pool | ✅ |
-| GitOps | Planned |
-| ML Platform | Planned |
+| Ingress NGINX | ✅ |
+| GitOps (ArgoCD) | ✅ |
+| PostgreSQL | ✅ |
+| MLflow (Tracking + Registry) | ✅ |
+| Training Pipeline & Experiment Tracking | ✅ |
+| Model Serving (FastAPI) | ⏳ In Progress |
+| KServe | Planned |
+| Kubeflow | Planned |
 | Monitoring | Planned |
 
 ---

@@ -112,6 +112,12 @@ Google Kubernetes Engine
 
 # Remaining Roadmap
 
+> **Delivery plan (finalized).** Training runs against the in-cluster MLflow service
+> and is orchestrated as a **Kubeflow pipeline in Phase 5** — there is **no standalone
+> Kubernetes `Job`** for training (it would only duplicate what Kubeflow owns).
+> Model serving is delivered **FastAPI first (Phase 4a), then KServe (Phase 4b)**.
+> Phases 1–3 are complete; the current focus is Phase 4a (Milestone 16).
+
 ## Phase 1 - MLflow Verification
 
 - Create experiments
@@ -143,11 +149,17 @@ Google Kubernetes Engine
 
 ## Phase 4 - Model Serving
 
+### Phase 4a - FastAPI Inference API (Milestone 16)
+
 - FastAPI Inference API
-- KServe
-- Deploy inference service
-- Serve models from MLflow Registry
+- Deploy inference service on GKE (GitOps)
+- Serve models from MLflow Registry (`LoanDefaultModel@champion`)
 - Perform online inference
+
+### Phase 4b - KServe
+
+- KServe
+- Serverless model serving
 - Canary Deployments
 
 ---
@@ -336,16 +348,17 @@ Monitoring & Logging
 | Kubernetes Platform | ✅ Completed |
 | GitOps | ✅ Completed |
 | MLflow Deployment | ✅ Completed |
-| MLflow Verification | ⏳ Pending |
-| Training Pipeline | ⏳ Pending |
-| Model Registry | ⏳ Pending |
-| Kubeflow | ⏳ Pending |
-| KServe | ⏳ Pending |
+| MLflow Verification | ✅ Completed |
+| Training Pipeline & Experiment Tracking | ✅ Completed |
+| Model Registry (`@champion` alias) | ✅ Completed |
+| Model Serving (FastAPI) | ⏳ In Progress (Milestone 16) |
+| KServe Serving | ⏳ Pending |
+| Kubeflow Orchestration | ⏳ Pending |
 | Monitoring | ⏳ Pending |
 | CI/CD | ⏳ Pending |
 | Security Improvements | ⏳ Planned (Iteration 2) |
 
-**Overall Progress:** **~70% Complete**
+**Overall Progress:** **~75% Complete**
 
 ---
 
@@ -391,7 +404,11 @@ Project documentation is available under the `docs/` directory and includes:
 
 **GitOps Foundation:** ✅ Complete
 
-**Current Phase:** Platform Services Deployment (PostgreSQL → MinIO → MLflow)
+**ML Platform:** ✅ MLflow, PostgreSQL, GCS artifact store deployed and verified
+
+**Model Lifecycle:** ✅ Training pipeline + experiment tracking + Model Registry (`LoanDefaultModel@champion`) working against the in-cluster MLflow
+
+**Current Phase:** Model Serving — deploying the FastAPI inference service on GKE (Milestone 16)
 
 ---
 
@@ -413,11 +430,15 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ MLflow
 
-⏳ Training pipeline
+✅ Training pipeline
 
-⏳ Model Registry
+✅ Model Registry
+
+⏳ Model Serving (FastAPI) — in progress
 
 ⏳ KServe
+
+⏳ Kubeflow orchestration
 
 ⏳ Monitoring
 
