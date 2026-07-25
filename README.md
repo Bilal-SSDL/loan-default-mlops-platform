@@ -156,11 +156,17 @@ Google Kubernetes Engine
 - Serve models from MLflow Registry (`LoanDefaultModel@champion`)
 - Perform online inference
 
-### Phase 4b - KServe
+### Phase 4b - KServe (RawDeployment) — Milestone 17
 
-- KServe
-- Serverless model serving
-- Canary Deployments
+- Install cert-manager + KServe (no Knative/Istio)
+- `InferenceService` in RawDeployment mode
+- Custom container (reuses the `loan-api` image; proxied registry loading)
+- HPA autoscaling
+- KServe V1 inference protocol
+
+> RawDeployment keeps Iteration 1 lightweight (no scale-to-zero, limited canary).
+> Upgrading KServe to **Serverless (Knative)** for scale-to-zero and clean canary
+> traffic splitting is deferred to **Iteration 2** (see below).
 
 ---
 
@@ -471,5 +477,6 @@ After the platform is fully working, we'll improve it by:
 - High Availability
 - GitHub Actions OIDC authentication
 - Production-grade monitoring and alerting
+- **KServe: upgrade RawDeployment → Serverless (Knative)** for scale-to-zero and canary traffic splitting (requires a node-pool capacity bump)
 
 At that point, the project becomes much closer to a production-grade reference architecture.

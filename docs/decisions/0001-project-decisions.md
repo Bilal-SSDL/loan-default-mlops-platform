@@ -121,3 +121,15 @@ Deliver serving in two steps: **FastAPI on GKE first (Phase 4a / Milestone 16)**
 ### Reason
 
 FastAPI is the shortest path to a working online-inference loop from the Model Registry and validates the end-to-end flow. KServe then adds serverless serving and canary deployments on top of a proven baseline.
+
+---
+
+## KServe Deployment Mode
+
+### Decision
+
+Iteration 1 uses **KServe RawDeployment mode** with a **custom container** (reusing the `loan-api` image). Upgrading to **Serverless mode (Knative)** is deferred to Iteration 2.
+
+### Reason
+
+RawDeployment needs only cert-manager + the KServe controller (no Knative/Istio), which fits the current `e2-standard-2` node pool and reuses the existing ingress-nginx and the proxied MLflow registry loading (no GCS secret). The trade-off is no scale-to-zero and limited canary traffic splitting. Serverless mode adds those capabilities but requires Knative, a network layer, and more node capacity — a natural Iteration 2 hardening step once the platform is fully working.
