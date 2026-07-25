@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY api/ ./api/
+
+COPY config/ ./config/
+
+EXPOSE 8000
+
+ENV MLFLOW_TRACKING_URI=http://mlflow.mlflow.svc.cluster.local:5000
+
+CMD [ "unicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
