@@ -351,8 +351,8 @@ Monitoring & Logging
 | MLflow Verification | ✅ Completed |
 | Training Pipeline & Experiment Tracking | ✅ Completed |
 | Model Registry (`@champion` alias) | ✅ Completed |
-| Model Serving (FastAPI) | ⏳ In Progress (Milestone 16) |
-| KServe Serving | ⏳ Pending |
+| Model Serving (FastAPI) | ✅ Completed |
+| KServe Serving | ⏳ In Progress (Milestone 17) |
 | Kubeflow Orchestration | ⏳ Pending |
 | Monitoring | ⏳ Pending |
 | CI/CD | ⏳ Pending |
@@ -408,7 +408,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 **Model Lifecycle:** ✅ Training pipeline + experiment tracking + Model Registry (`LoanDefaultModel@champion`) working against the in-cluster MLflow
 
-**Current Phase:** Model Serving — deploying the FastAPI inference service on GKE (Milestone 16)
+**Model Serving:** ✅ FastAPI inference service deployed on GKE, serving `LoanDefaultModel@champion` via ArgoCD (Milestone 16)
+
+**Current Phase:** Phase 4b — KServe serverless serving + canary deployments (Milestone 17)
 
 ---
 
@@ -434,7 +436,7 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ Model Registry
 
-⏳ Model Serving (FastAPI) — in progress
+✅ Model Serving (FastAPI)
 
 ⏳ KServe
 

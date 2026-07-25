@@ -45,8 +45,9 @@ Developer
 ```
 
 Training pipeline, experiment tracking, and Model Registry (`LoanDefaultModel@champion`)
-are working against this MLflow deployment. The next workload is the FastAPI
-inference service (Milestone 16).
+are working against this MLflow deployment. The FastAPI inference service is deployed
+on GKE and serves the `champion` model over HTTP (Milestone 16). The next step is
+serverless serving with KServe and canary deployments (Milestone 17).
 
 ---
 
@@ -69,8 +70,8 @@ inference service (Milestone 16).
 | PostgreSQL | ✅ |
 | MLflow (Tracking + Registry) | ✅ |
 | Training Pipeline & Experiment Tracking | ✅ |
-| Model Serving (FastAPI) | ⏳ In Progress |
-| KServe | Planned |
+| Model Serving (FastAPI) | ✅ |
+| KServe | ⏳ In Progress |
 | Kubeflow | Planned |
 | Monitoring | Planned |
 
