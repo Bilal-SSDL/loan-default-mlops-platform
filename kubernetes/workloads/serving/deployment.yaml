@@ -5,35 +5,35 @@ metadata:
   namespace: application
   labels:
     app: loan-api
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loan-api
+  template:
+    metadata:
+      labels:
         app: loan-api
-    template:
-      metadata:
-        labels:
-          app: loan-api
-      spec:
-        containers:
-          - name: loan-api
-            image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:1.0
-            imagePullPolicy: Always
-            ports:
-              - containerPort: 8000
-            env:
-              - name: MLFLOW_TRACKING_URI
-                value: http://mlflow.mlflow.svc.cluster.local:5000
-              - name: MODEL_URI
-                value: models:/LoanDefaultModel@champion
-            readinessProbe:
-              httpGet: {path: /health, port: 8000}
-              initialDelaySeconds: 10
-              periodSeconds: 10
-            livenessProbe:
-              httpGet: {path: /health, port: 8000}
-              initialDelaySeconds: 20
-              periodSeconds: 20
-            resouces:
-              requests: { cpu: 100m, memory: 512Mi }
-              limits: { cpu: "1", memory: 1Gi }
+    spec:
+      containers:
+        - name: loan-api
+          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: http://mlflow.mlflow.svc.cluster.local:5000
+            - name: MODEL_URI
+              value: models:/LoanDefaultModel@champion
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 100m, memory: 512Mi }
+            limits: { cpu: "1", memory: 1Gi }
