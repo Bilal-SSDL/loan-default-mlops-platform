@@ -1,13 +1,14 @@
 
-## Setup Everything from Scratch
-
+# 1: ## Setup Everything from Scratch
 
 # deploy terraform
 
 cd terraform/environments/dev
 terraform apply
 
-# Authenticate with GCP
+# 2:  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+# Authenticate with GCP and deploy require components
 gcloud auth login
 
 # Set the project
@@ -39,14 +40,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
 # Install ArgoCD
 helm install argocd argo/argo-cd \
   --namespace argocd
-# ##################################
-
-# Ingress setup for Argocd
-helm upgrade argocd argo/argo-cd \
-  -n argocd \
-  --reuse-values \
-  --set server.extraArgs="{--insecure}"
-kubectl apply -f kubernetes/infrastructure/ingress/argocd-ingress.yaml
+# 3: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 # Setup service account and secret
 mkdir -p secrets
@@ -66,16 +60,23 @@ gcloud storage buckets add-iam-policy-binding gs://lendo-mlops-terraform-state \
 kubectl create secret generic gcp-service-account \
 --from-file=key.json=./secrets/mlflow-sa-key.json \
 -n mlflow
-
-# ###################################
+# 4: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 # Setup mlflow
 cd platform
 sudo docker build -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0 ./mlflow
 gcloud auth configure-docker us-central1-docker.pkg.dev
 docker push us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow:1.0
+# 5: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 # Deploy app of apps application file
+# Ingress setup for Argocd
+helm upgrade argocd argo/argo-cd \
+  -n argocd \
+  --reuse-values \
+  --set server.extraArgs="{--insecure}"
+kubectl apply -f kubernetes/infrastructure/ingress/argocd-ingress.yaml
+
 kubectl apply -f kubernetes/bootstrap/root-application.yaml
 
 
@@ -86,7 +87,30 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 # Port Forward ArgoCD
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-### Core components and project setup completed
+# 6: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+## Train the model and track through MLFLOW
+cd ml
+
+python3 -m venv .venv
+
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+# Expose the in-cluster MLflow tracking server locally
+kubectl port-forward svc/mlflow 5000:5000 -n mlflow
+
+# Point the pipeline at the forwarded tracking server, then run it
+export MLFLOW_TRACKING_URI=http://localhost:5000
+python src/preprocess.py
+python src/train.py
+
+# 7: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+# Setup KSERVE and deploy application
+# Check in docs/milestones/milestone-17-kserve.md
+
 
 
 

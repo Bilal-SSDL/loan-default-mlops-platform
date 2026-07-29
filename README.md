@@ -444,7 +444,7 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ Model Serving (FastAPI)
 
-⏳ KServe
+✅ KServe
 
 ⏳ Kubeflow orchestration
 
