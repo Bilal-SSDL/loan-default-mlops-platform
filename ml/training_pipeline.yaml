@@ -1,0 +1,32 @@
+# PIPELINE DEFINITION
+# Name: loan-default-training
+# Description: Preprocess + train + register to MLflow
+components:
+  comp-train-step:
+    executorLabel: exec-train-step
+deploymentSpec:
+  executors:
+    exec-train-step:
+      container:
+        command:
+        - sh
+        - -c
+        - python src/preprocess.py && python src/train.py
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: http://mlflow.mlflow.svc.cluster.local:5000
+        image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-trainer:1.0
+pipelineInfo:
+  description: Preprocess + train + register to MLflow
+  name: loan-default-training
+root:
+  dag:
+    tasks:
+      train-step:
+        cachingOptions: {}
+        componentRef:
+          name: comp-train-step
+        taskInfo:
+          name: train-step
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.17.0
