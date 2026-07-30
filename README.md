@@ -478,5 +478,7 @@ After the platform is fully working, we'll improve it by:
 - GitHub Actions OIDC authentication
 - Production-grade monitoring and alerting
 - **KServe: upgrade RawDeployment → Serverless (Knative)** for scale-to-zero and canary traffic splitting (requires a node-pool capacity bump)
+- **Kubeflow: upgrade KFP standalone → full Kubeflow platform** (dashboard, Istio, Katib, Notebooks, Profiles)
+- **Training pipeline: split single-step → multi-step** KFP pipeline with artifact passing between `preprocess` and `train` components
 
 At that point, the project becomes much closer to a production-grade reference architecture.

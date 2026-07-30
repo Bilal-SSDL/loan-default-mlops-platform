@@ -1,0 +1,8 @@
+.venv
+experiments
+models
+data/processed
+artifacts
+tests
+__pycache__
+api

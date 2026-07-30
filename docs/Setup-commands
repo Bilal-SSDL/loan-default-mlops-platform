@@ -113,9 +113,14 @@ python src/train.py
 
 
 
+# 8: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+# beflow pipeline setup
 
-
-
+docker build -f ml/Dockerfile.kfp \
+  -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-trainer:1.0 \
+  ml/
+docker push \
+  us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-trainer:1.0
 
 
 
