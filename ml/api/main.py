@@ -53,13 +53,13 @@ class InferenceResponse(BaseModel):
 
 @app.get("/v1/models/{model_name}")
 def kserve_ready(model_name: str):
-    """KServe V1 readiness endpoint....."""
+    """KServe V1 readiness endpoint..."""
     return {"name": model_name, "ready": True}
 
 
 @app.post("/v1/models/{model_name}:predict", response_model=InferenceResponse)
 def kserve_predict(model_name: str, request: InferenceRequest):
-    """KServe V1 predict: run each raw instance through the registered pipeline."""
+    """KServe V1 predict: run each raw instance through the registered pipeline.."""
     try:
         predictions = [predictor.predict(instance) for instance in request.instances]
         return {"predictions": predictions}

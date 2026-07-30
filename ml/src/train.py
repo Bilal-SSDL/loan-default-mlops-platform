@@ -213,7 +213,7 @@ def log_artifacts(model, X_test, y_test, feature_names=None) -> None:
 
 
 def main() -> None:
-    """Run the full training pipeline inside a single MLflow run."""
+    """Run the full training pipeline inside a single MLflow run...."""
     mlflow.set_tracking_uri(settings.MLFLOW_TRACKING_URI)
     mlflow.set_experiment(settings.EXPERIMENT_NAME)
 
