@@ -76,7 +76,7 @@ jobs:
         if: needs.changes.outputs.trainer == 'true'
         run: |
           IMG=$REGISTRY/$REPO/loan-trainer:${{ steps.vars.outputs.tag }}
-          docker build -f ml/Dockerfile -t "$IMG" ml/
+          docker build -f ml/Dockerfile.kfp -t "$IMG" ml/
           docker push "$IMG"
 
       - name: Build & push mlflow
