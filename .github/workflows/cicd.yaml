@@ -46,7 +46,7 @@ jobs:
               - 'ml/src/**'
               - 'ml/config/**'
               - 'ml/requirements.txt'
-              - 'ml/Dockerfile'
+              - 'ml/Dockerfile.kfp'
               - 'ml/data/raw/**'
             mlflow:
               - 'platform/mlflow/**'
