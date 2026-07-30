@@ -1,0 +1,108 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ml/**'
+      - 'platform/mlflow/**'
+
+permissions:
+  contents: write          # needed for the tag write-back commit
+
+env:
+  REGISTRY: us-central1-docker.pkg.dev
+  REPO: lendo-dr-417012/lendo-app-artifact-repo/mlflow-api
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -r ml/requirements.txt pytest httpx
+      - run: pytest ml/tests -q
+
+  changes:
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      api: ${{ steps.f.outputs.api }}
+      trainer: ${{ steps.f.outputs.trainer }}
+      mlflow: ${{ steps.f.outputs.mlflow }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: f
+        with:
+          filters: |
+            api:
+              - 'ml/api/**'
+              - 'ml/config/**'
+              - 'ml/requirements.txt'
+              - 'ml/Dockerfile.api'
+            trainer:
+              - 'ml/src/**'
+              - 'ml/config/**'
+              - 'ml/requirements.txt'
+              - 'ml/Dockerfile'
+              - 'ml/data/raw/**'
+            mlflow:
+              - 'platform/mlflow/**'
+
+  build-deploy:
+    runs-on: ubuntu-latest
+    needs: changes
+    steps:
+      - uses: actions/checkout@v4
+      - id: vars
+        run: echo "tag=sha-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud auth configure-docker $REGISTRY --quiet
+
+      - name: Build & push loan-api
+        if: needs.changes.outputs.api == 'true'
+        run: |
+          IMG=$REGISTRY/$REPO/loan-api:${{ steps.vars.outputs.tag }}
+          docker build -f ml/Dockerfile.api -t "$IMG" ml/
+          docker push "$IMG"
+
+      - name: Build & push loan-trainer
+        if: needs.changes.outputs.trainer == 'true'
+        run: |
+          IMG=$REGISTRY/$REPO/loan-trainer:${{ steps.vars.outputs.tag }}
+          docker build -f ml/Dockerfile -t "$IMG" ml/
+          docker push "$IMG"
+
+      - name: Build & push mlflow
+        if: needs.changes.outputs.mlflow == 'true'
+        run: |
+          IMG=$REGISTRY/$REPO/mlflow:${{ steps.vars.outputs.tag }}
+          docker build -t "$IMG" platform/mlflow
+          docker push "$IMG"
+
+      - name: Write back image tags (GitOps)
+        run: |
+          TAG=${{ steps.vars.outputs.tag }}
+          if [ "${{ needs.changes.outputs.api }}" = "true" ]; then
+            export NEWIMG=$REGISTRY/$REPO/loan-api:$TAG
+            yq -i '.spec.template.spec.containers[0].image = strenv(NEWIMG)' kubernetes/workloads/serving/deployment.yaml
+            yq -i '.spec.predictor.containers[0].image = strenv(NEWIMG)' kubernetes/workloads/kserve/inferenceservice.yaml
+          fi
+          if [ "${{ needs.changes.outputs.mlflow }}" = "true" ]; then
+            export NEWIMG=$REGISTRY/$REPO/mlflow:$TAG
+            yq -i '.spec.template.spec.containers[0].image = strenv(NEWIMG)' kubernetes/platform/mlflow/deployment.yaml
+          fi
+
+      - name: Commit & push manifest bump
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add kubernetes/
+          git commit -m "ci: deploy images ${{ steps.vars.outputs.tag }} [skip ci]" || echo "nothing to commit"
+          git push

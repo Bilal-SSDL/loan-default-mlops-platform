@@ -114,7 +114,7 @@ python src/train.py
 
 
 # 8: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-# beflow pipeline setup
+# kubeflow pipeline setup
 
 docker build -f ml/Dockerfile.kfp \
   -t us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-trainer:1.0 \
@@ -124,7 +124,12 @@ docker push \
 
  # Refer to docs/milestones/milestone-18-kubeflow.md docs to run completly
 
- # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+# 9: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+# CICD
+# push permission (it currently only has reader)
+gcloud projects add-iam-policy-binding lendo-dr-417012 \
+  --member="serviceAccount:lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com" \
+  --role="roles/artifactregistry.writer"
 
 
 
