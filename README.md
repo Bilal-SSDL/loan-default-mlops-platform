@@ -105,7 +105,13 @@ Google Kubernetes Engine
     │
     ├──────────────► GCS Bucket
     │
-    └──────────────► MLflow
+    ├──────────────► MLflow (Tracking + Model Registry)
+    │
+    ├──────────────► FastAPI Inference Service
+    │
+    ├──────────────► KServe (RawDeployment)
+    │
+    └──────────────► Kubeflow Pipelines
 ```
 
 ---
@@ -358,13 +364,13 @@ Monitoring & Logging
 | Training Pipeline & Experiment Tracking | ✅ Completed |
 | Model Registry (`@champion` alias) | ✅ Completed |
 | Model Serving (FastAPI) | ✅ Completed |
-| KServe Serving | ⏳ In Progress (Milestone 17) |
-| Kubeflow Orchestration | ⏳ Pending |
+| KServe Serving | ✅ Completed |
+| Kubeflow Orchestration | ✅ Completed |
+| CI/CD | ⏳ In Progress (Milestone 19) |
 | Monitoring | ⏳ Pending |
-| CI/CD | ⏳ Pending |
 | Security Improvements | ⏳ Planned (Iteration 2) |
 
-**Overall Progress:** **~75% Complete**
+**Overall Progress:** **~85% Complete**
 
 ---
 
@@ -414,9 +420,11 @@ Project documentation is available under the `docs/` directory and includes:
 
 **Model Lifecycle:** ✅ Training pipeline + experiment tracking + Model Registry (`LoanDefaultModel@champion`) working against the in-cluster MLflow
 
-**Model Serving:** ✅ FastAPI inference service deployed on GKE, serving `LoanDefaultModel@champion` via ArgoCD (Milestone 16)
+**Model Serving:** ✅ FastAPI inference service (Milestone 16) and KServe `InferenceService` in RawDeployment mode (Milestone 17) deployed on GKE, serving `LoanDefaultModel@champion` via ArgoCD
 
-**Current Phase:** Phase 4b — KServe serverless serving + canary deployments (Milestone 17)
+**Workflow Orchestration:** ✅ Kubeflow Pipelines (standalone) running the single-step training pipeline that retrains, registers, and promotes `champion` (Milestone 18)
+
+**Current Phase:** Phase 6 — CI/CD with GitHub Actions (Milestone 19)
 
 ---
 
@@ -446,13 +454,13 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ KServe
 
-⏳ Kubeflow orchestration
+✅ Kubeflow orchestration
 
-⏳ Monitoring
+✅ End-to-end prediction flow
 
 ⏳ CI/CD
 
-⏳ End-to-end prediction flow
+⏳ Monitoring
 
 For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
 

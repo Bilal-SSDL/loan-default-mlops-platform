@@ -122,6 +122,10 @@ docker build -f ml/Dockerfile.kfp \
 docker push \
   us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-trainer:1.0
 
+ # Refer to docs/milestones/milestone-18-kubeflow.md docs to run completly
+
+ # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 
+
 
 
 

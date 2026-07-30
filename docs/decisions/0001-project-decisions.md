@@ -133,3 +133,15 @@ Iteration 1 uses **KServe RawDeployment mode** with a **custom container** (reus
 ### Reason
 
 RawDeployment needs only cert-manager + the KServe controller (no Knative/Istio), which fits the current `e2-standard-2` node pool and reuses the existing ingress-nginx and the proxied MLflow registry loading (no GCS secret). The trade-off is no scale-to-zero and limited canary traffic splitting. Serverless mode adds those capabilities but requires Knative, a network layer, and more node capacity — a natural Iteration 2 hardening step once the platform is fully working.
+
+---
+
+## Workflow Orchestration Platform
+
+### Decision
+
+Iteration 1 uses **Kubeflow Pipelines (KFP) standalone** with a **single-step** training pipeline (reusing the `loan-trainer` image). Full Kubeflow and a multi-step (artifact-passing) pipeline are deferred to Iteration 2.
+
+### Reason
+
+Full Kubeflow (Istio, dashboard, Katib, Notebooks, Profiles) is far too heavy for the `e2-standard-2` node pool; KFP standalone delivers the Phase 5 goals (pipelines, scheduling, MLflow integration) at a fraction of the footprint. A single-step pipeline (preprocess + train + register in one container) proves the orchestration → MLflow → registry loop with minimal code change; decomposing it into `preprocess` and `train` components that pass artifacts is a refinement for Iteration 2.
