@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: loan-api
-          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:1.0
+          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:sha-27dc9e3
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -27,13 +27,13 @@ spec:
             - name: MODEL_URI
               value: models:/LoanDefaultModel@champion
           readinessProbe:
-            httpGet: { path: /health, port: 8000 }
+            httpGet: {path: /health, port: 8000}
             initialDelaySeconds: 10
             periodSeconds: 10
           livenessProbe:
-            httpGet: { path: /health, port: 8000 }
+            httpGet: {path: /health, port: 8000}
             initialDelaySeconds: 20
             periodSeconds: 20
           resources:
-            requests: { cpu: 100m, memory: 512Mi }
-            limits: { cpu: "1", memory: 1Gi }
+            requests: {cpu: 100m, memory: 512Mi}
+            limits: {cpu: "1", memory: 1Gi}
