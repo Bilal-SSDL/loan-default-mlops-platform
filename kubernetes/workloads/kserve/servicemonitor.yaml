@@ -1,18 +1,17 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: loan-api
+  name: loan-default-predictor-kserve
   namespace: application
   labels:
-    app: loan-api
+    app: loan-default-predictor-kserve
 spec:
   namespaceSelector:
     matchNames: [application]
   selector:
     matchLabels:
-      app: loan-api          # matches your loan-api Service
+      app: loan-default          # matches your loan-api Service
   endpoints:
     - port: http             # the named port on the Service (8000)
       path: /metrics
       interval: 15s
-
