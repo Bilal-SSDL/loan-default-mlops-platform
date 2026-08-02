@@ -116,6 +116,50 @@ Google Kubernetes Engine
 
 ---
 
+# How the Platform Works (Concepts)
+
+## Where things are stored
+
+The word "artifact" means two unrelated things in this project. Keep them separate:
+
+| What is stored | Where | Notes |
+|----------------|-------|-------|
+| Run metadata — params, metrics, tags, run history | **PostgreSQL** | MLflow *backend store* |
+| Model files + plots (ROC, confusion matrix, etc.) | **GCS bucket** | MLflow *artifact store*, written by the tracking server (proxied) |
+| Container images — `mlflow`, `loan-api`, `loan-trainer` | **GCP Artifact Registry** | Docker images only — **not** ML models |
+
+> The trained model lives in **GCS**, not Artifact Registry. Artifact Registry only
+> holds container images. MLflow "artifacts" (GCS) and a container image "registry"
+> (Artifact Registry) are different things that happen to share the word.
+
+## Two automation loops
+
+The platform automates two separate lifecycles. Conflating them is the most common
+point of confusion:
+
+- **Model lifecycle — Kubeflow Pipelines.** Automates *retraining*: `preprocess ->
+  train -> log to MLflow -> register -> promote champion`, on demand or on a
+  schedule. Output: a new model version with the `champion` alias.
+- **Software lifecycle — GitHub Actions + ArgoCD.** Automates *code -> image ->
+  deployed*: on a push under `ml/` or `platform/mlflow/`, it tests, builds and pushes
+  the changed image, writes the new tag into the manifests, and ArgoCD rolls it out.
+  Output: new code running in the cluster.
+- **The bridge — `model-refresh` CronJob.** Serving pods cache the model in memory,
+  so when Kubeflow promotes a new `champion`, the CronJob restarts them to load it.
+
+## Serving paths
+
+Two serving paths currently run in parallel against the same `champion` model, for
+learning purposes:
+
+- **FastAPI Deployment** (Milestone 16) — a hand-written inference service.
+- **KServe InferenceService** (Milestone 17) — standardized serving with autoscaling.
+
+In a production setup you would pick one; here both exist to demonstrate the
+difference.
+
+---
+
 # Remaining Roadmap
 
 > **Delivery plan (finalized).** Training runs against the in-cluster MLflow service
@@ -366,11 +410,11 @@ Monitoring & Logging
 | Model Serving (FastAPI) | ✅ Completed |
 | KServe Serving | ✅ Completed |
 | Kubeflow Orchestration | ✅ Completed |
-| CI/CD | ⏳ In Progress (Milestone 19) |
-| Monitoring | ⏳ Pending |
+| CI/CD | ✅ Completed |
+| Monitoring | ⏳ In Progress (Milestone 20) |
 | Security Improvements | ⏳ Planned (Iteration 2) |
 
-**Overall Progress:** **~85% Complete**
+**Overall Progress:** **~90% Complete**
 
 ---
 
@@ -424,7 +468,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 **Workflow Orchestration:** ✅ Kubeflow Pipelines (standalone) running the single-step training pipeline that retrains, registers, and promotes `champion` (Milestone 18)
 
-**Current Phase:** Phase 6 — CI/CD with GitHub Actions (Milestone 19)
+**CI/CD:** ✅ GitHub Actions builds/pushes changed images and writes tags back to the manifests for ArgoCD to deploy; a CronJob refreshes serving pods on new `champion` (Milestone 19)
+
+**Current Phase:** Phase 7 — Monitoring with Prometheus + Grafana (Milestone 20)
 
 ---
 
@@ -458,7 +504,7 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ End-to-end prediction flow
 
-⏳ CI/CD
+✅ CI/CD
 
 ⏳ Monitoring
 

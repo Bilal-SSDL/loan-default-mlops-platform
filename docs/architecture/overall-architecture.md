@@ -48,8 +48,9 @@ Training pipeline, experiment tracking, and Model Registry (`LoanDefaultModel@ch
 are working against this MLflow deployment. The FastAPI inference service (Milestone 16)
 and a KServe `InferenceService` in RawDeployment mode (Milestone 17) both serve the
 `champion` model on GKE. Training is orchestrated by Kubeflow Pipelines standalone,
-which retrains, registers, and promotes `champion` (Milestone 18). The next step is
-CI/CD with GitHub Actions (Milestone 19).
+which retrains, registers, and promotes `champion` (Milestone 18). CI/CD with GitHub
+Actions builds and delivers images and writes tags back to the manifests for ArgoCD
+(Milestone 19). The next step is monitoring with Prometheus and Grafana (Milestone 20).
 
 ---
 
@@ -75,8 +76,8 @@ CI/CD with GitHub Actions (Milestone 19).
 | Model Serving (FastAPI) | ✅ |
 | KServe (RawDeployment) | ✅ |
 | Kubeflow Pipelines | ✅ |
-| CI/CD | ⏳ In Progress |
-| Monitoring | Planned |
+| CI/CD (GitHub Actions) | ✅ |
+| Monitoring | ⏳ In Progress |
 
 ---
 
