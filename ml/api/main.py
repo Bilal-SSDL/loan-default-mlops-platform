@@ -53,7 +53,7 @@ class InferenceResponse(BaseModel):
 
 @app.get("/v1/models/{model_name}")
 def kserve_ready(model_name: str):
-    """KServe V1 readiness endpoint..."""
+    """KServe V1 readiness endpoint.."""
     return {"name": model_name, "ready": True}
 
 
