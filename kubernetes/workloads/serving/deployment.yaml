@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: loan-api
-          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:sha-27dc9e3
+          image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:sha-84751b1
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
