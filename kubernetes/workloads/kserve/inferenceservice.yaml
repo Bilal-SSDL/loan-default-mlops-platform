@@ -4,25 +4,25 @@ metadata:
   name: loan-default
   namespace: application
   annotations:
-    serving.kserve.io/deploymentMode: RawDeployment   # forces raw mode per-service
+    serving.kserve.io/deploymentMode: RawDeployment # forces raw mode per-service
 spec:
   predictor:
     minReplicas: 1
     maxReplicas: 3
-    scaleTarget: 60          # HPA target: 60% CPU
+    scaleTarget: 60 # HPA target: 60% CPU
     scaleMetric: cpu
     containers:
-      - name: kserve-container          # this exact name is required
-        image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:1.1
+      - name: kserve-container # this exact name is required
+        image: us-central1-docker.pkg.dev/lendo-dr-417012/lendo-app-artifact-repo/mlflow-api/loan-api:sha-27dc9e3
         ports:
           - containerPort: 8000
         env:
-          - { name: MLFLOW_TRACKING_URI, value: http://mlflow.mlflow.svc.cluster.local:5000 }
-          - { name: MODEL_URI, value: "models:/LoanDefaultModel@champion" }
+          - {name: MLFLOW_TRACKING_URI, value: 'http://mlflow.mlflow.svc.cluster.local:5000'}
+          - {name: MODEL_URI, value: "models:/LoanDefaultModel@champion"}
         readinessProbe:
-          httpGet: { path: /health, port: 8000 }
+          httpGet: {path: /health, port: 8000}
           initialDelaySeconds: 10
           periodSeconds: 10
         resources:
-          requests: { cpu: 100m, memory: 512Mi }
-          limits:   { cpu: "1", memory: 1Gi }
+          requests: {cpu: 100m, memory: 512Mi}
+          limits: {cpu: "1", memory: 1Gi}
