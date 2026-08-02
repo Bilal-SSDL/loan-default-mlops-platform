@@ -145,3 +145,15 @@ Iteration 1 uses **Kubeflow Pipelines (KFP) standalone** with a **single-step** 
 ### Reason
 
 Full Kubeflow (Istio, dashboard, Katib, Notebooks, Profiles) is far too heavy for the `e2-standard-2` node pool; KFP standalone delivers the Phase 5 goals (pipelines, scheduling, MLflow integration) at a fraction of the footprint. A single-step pipeline (preprocess + train + register in one container) proves the orchestration → MLflow → registry loop with minimal code change; decomposing it into `preprocess` and `train` components that pass artifacts is a refinement for Iteration 2.
+
+---
+
+## Monitoring Stack
+
+### Decision
+
+Use the **kube-prometheus-stack** (Prometheus + Grafana + Alertmanager + exporters) and instrument the FastAPI app with `prometheus-fastapi-instrumentator`. Dashboards are provisioned via the Grafana sidecar (ConfigMap). Alert rules and Alertmanager routing are deferred to Iteration 2.
+
+### Reason
+
+The single chart brings the Prometheus Operator, Grafana, Alertmanager, and cluster exporters with ServiceMonitor/PrometheusRule CRDs — the standard, GitOps-friendly path, versus wiring Prometheus and Grafana separately. Instrumenting the app yields real inference metrics (request rate, latency, error rate), not just infra health, and the KServe path is covered since it reuses the same image. GitOps-provisioned dashboards survive Grafana pod restarts. Alerting (rules + receiver routing) is functional-but-not-critical for Iteration 1, so it is deferred to the hardening iteration.

@@ -411,10 +411,11 @@ Monitoring & Logging
 | KServe Serving | ✅ Completed |
 | Kubeflow Orchestration | ✅ Completed |
 | CI/CD | ✅ Completed |
-| Monitoring | ⏳ In Progress (Milestone 20) |
+| Monitoring | ✅ Completed |
+| Logging | ⏳ In Progress (Milestone 21) |
 | Security Improvements | ⏳ Planned (Iteration 2) |
 
-**Overall Progress:** **~90% Complete**
+**Overall Progress:** **~93% Complete**
 
 ---
 
@@ -470,7 +471,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 **CI/CD:** ✅ GitHub Actions builds/pushes changed images and writes tags back to the manifests for ArgoCD to deploy; a CronJob refreshes serving pods on new `champion` (Milestone 19)
 
-**Current Phase:** Phase 7 — Monitoring with Prometheus + Grafana (Milestone 20)
+**Monitoring:** ✅ kube-prometheus-stack (Prometheus + Grafana + Alertmanager) deployed; FastAPI instrumented with `/metrics`, scraped via ServiceMonitor, with a GitOps-provisioned inference dashboard (Milestone 20)
+
+**Current Phase:** Phase 8 — Logging with Loki + Fluent Bit (Milestone 21)
 
 ---
 
@@ -506,7 +509,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ CI/CD
 
-⏳ Monitoring
+✅ Monitoring
+
+⏳ Logging
 
 For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
 
@@ -534,5 +539,6 @@ After the platform is fully working, we'll improve it by:
 - **KServe: upgrade RawDeployment → Serverless (Knative)** for scale-to-zero and canary traffic splitting (requires a node-pool capacity bump)
 - **Kubeflow: upgrade KFP standalone → full Kubeflow platform** (dashboard, Istio, Katib, Notebooks, Profiles)
 - **Training pipeline: split single-step → multi-step** KFP pipeline with artifact passing between `preprocess` and `train` components
+- **Monitoring: add alerting** — PrometheusRule alert rules + Alertmanager receiver routing (Slack/email); dashboards for MLflow/Kubeflow; a ServiceMonitor for the KServe predictor
 
 At that point, the project becomes much closer to a production-grade reference architecture.

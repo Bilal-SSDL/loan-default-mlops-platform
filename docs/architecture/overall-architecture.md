@@ -50,7 +50,9 @@ and a KServe `InferenceService` in RawDeployment mode (Milestone 17) both serve 
 `champion` model on GKE. Training is orchestrated by Kubeflow Pipelines standalone,
 which retrains, registers, and promotes `champion` (Milestone 18). CI/CD with GitHub
 Actions builds and delivers images and writes tags back to the manifests for ArgoCD
-(Milestone 19). The next step is monitoring with Prometheus and Grafana (Milestone 20).
+(Milestone 19). Monitoring runs on the kube-prometheus-stack with an instrumented
+FastAPI `/metrics` endpoint and a Grafana inference dashboard (Milestone 20). The next
+step is centralized logging with Loki and Fluent Bit (Milestone 21).
 
 ---
 
@@ -77,7 +79,8 @@ Actions builds and delivers images and writes tags back to the manifests for Arg
 | KServe (RawDeployment) | ✅ |
 | Kubeflow Pipelines | ✅ |
 | CI/CD (GitHub Actions) | ✅ |
-| Monitoring | ⏳ In Progress |
+| Monitoring (Prometheus + Grafana) | ✅ |
+| Logging | ⏳ In Progress |
 
 ---
 
