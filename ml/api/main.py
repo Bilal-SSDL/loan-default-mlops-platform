@@ -2,7 +2,7 @@
 
     Client -> FastAPI -> MLflow Registry -> Prediction
 
-Run locally (with the MLflow port-forward active):
+Run locally (with the MLflow port-forward active)::
     MLFLOW_TRACKING_URI=http://localhost:5000 uvicorn api.main:app --port 8000
 """
 
@@ -53,7 +53,7 @@ class InferenceResponse(BaseModel):
 
 @app.get("/v1/models/{model_name}")
 def kserve_ready(model_name: str):
-    """KServe V1 readiness endpoint...."""
+    """KServe V1 readiness endpoint..."""
     return {"name": model_name, "ready": True}
 
 

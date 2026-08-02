@@ -131,6 +131,16 @@ gcloud projects add-iam-policy-binding lendo-dr-417012 \
   --member="serviceAccount:lendo-app-service-account@lendo-dr-417012.iam.gserviceaccount.com" \
   --role="roles/artifactregistry.writer"
 
+# 10 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+# Destroy specific infra, avoid bucket and artifact registry
+cd terraform/environments/dev
+terraform destroy \
+  -target=module.gke \
+  -target=module.networking \
+  -target=module.service_account \
+  -target=google_artifact_registry_repository_iam_member.node_pool_reader
+
+
 
 
 
