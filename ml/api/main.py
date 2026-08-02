@@ -14,12 +14,19 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 # Make the ml/ package root importable regardless of how the app is launched.
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from api import predictor  # noqa: E402
 from api.schemas import LoanRequest, PredictionResponse  # noqa: E402
 
 app = FastAPI(title="Loan Default Prediction API", version="1.1.0")
+
+
+# Exposes GET /metrics with request count, latency histograms, and status codes.
+Instrumentator().instrument(app).expose(app)
+
 
 
 @app.get("/health")

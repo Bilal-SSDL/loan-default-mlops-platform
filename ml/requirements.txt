@@ -7,3 +7,4 @@ matplotlib==3.10.7
 seaborn==0.13.2
 fastapi==0.139.2
 uvicorn[standard]==0.51.0
+prometheus-fastapi-instrumentator==7.0.0
