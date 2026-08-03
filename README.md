@@ -412,10 +412,10 @@ Monitoring & Logging
 | Kubeflow Orchestration | ✅ Completed |
 | CI/CD | ✅ Completed |
 | Monitoring | ✅ Completed |
-| Logging | ⏳ In Progress (Milestone 21) |
+| Logging | ✅ Completed |
 | Security Improvements | ⏳ Planned (Iteration 2) |
 
-**Overall Progress:** **~93% Complete**
+**Overall Progress:** **Iteration 1 functionally complete (~95%)** — remaining work is Iteration 2 (Hardening)
 
 ---
 
@@ -473,7 +473,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 **Monitoring:** ✅ kube-prometheus-stack (Prometheus + Grafana + Alertmanager) deployed; FastAPI instrumented with `/metrics`, scraped via ServiceMonitor, with a GitOps-provisioned inference dashboard (Milestone 20)
 
-**Current Phase:** Phase 8 — Logging with Loki + Fluent Bit (Milestone 21)
+**Logging:** ✅ Loki + Promtail deployed; all pod logs collected and queryable in Grafana alongside metrics, with a GitOps-provisioned logs dashboard (Milestone 21)
+
+**Current Phase:** ✅ Iteration 1 functionally complete — next up is Iteration 2 (Hardening)
 
 ---
 
@@ -511,9 +513,9 @@ Project documentation is available under the `docs/` directory and includes:
 
 ✅ Monitoring
 
-⏳ Logging
+✅ Logging
 
-For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
+**Iteration 1 is functionally complete.** For authentication, use a Google Service Account key mounted as a Kubernetes Secret.
 
 This is acceptable for a learning project, provided we clearly document that it's temporary.
 
@@ -540,5 +542,6 @@ After the platform is fully working, we'll improve it by:
 - **Kubeflow: upgrade KFP standalone → full Kubeflow platform** (dashboard, Istio, Katib, Notebooks, Profiles)
 - **Training pipeline: split single-step → multi-step** KFP pipeline with artifact passing between `preprocess` and `train` components
 - **Monitoring: add alerting** — PrometheusRule alert rules + Alertmanager receiver routing (Slack/email); dashboards for MLflow/Kubeflow; a ServiceMonitor for the KServe predictor
+- **Logging: durable GCS-backed Loki storage** (survives PVC loss); migrate Promtail → Grafana Alloy; log-based alerts
 
 At that point, the project becomes much closer to a production-grade reference architecture.

@@ -51,8 +51,10 @@ and a KServe `InferenceService` in RawDeployment mode (Milestone 17) both serve 
 which retrains, registers, and promotes `champion` (Milestone 18). CI/CD with GitHub
 Actions builds and delivers images and writes tags back to the manifests for ArgoCD
 (Milestone 19). Monitoring runs on the kube-prometheus-stack with an instrumented
-FastAPI `/metrics` endpoint and a Grafana inference dashboard (Milestone 20). The next
-step is centralized logging with Loki and Fluent Bit (Milestone 21).
+FastAPI `/metrics` endpoint and a Grafana inference dashboard (Milestone 20).
+Centralized logging uses Loki + Promtail, queryable in the same Grafana (Milestone 21).
+This completes the functional platform (Iteration 1); remaining work is Iteration 2
+hardening (security, HA, alerting, durable storage).
 
 ---
 
@@ -80,7 +82,7 @@ step is centralized logging with Loki and Fluent Bit (Milestone 21).
 | Kubeflow Pipelines | ✅ |
 | CI/CD (GitHub Actions) | ✅ |
 | Monitoring (Prometheus + Grafana) | ✅ |
-| Logging | ⏳ In Progress |
+| Logging (Loki + Promtail) | ✅ |
 
 ---
 

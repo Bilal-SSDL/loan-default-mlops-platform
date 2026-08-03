@@ -157,3 +157,15 @@ Use the **kube-prometheus-stack** (Prometheus + Grafana + Alertmanager + exporte
 ### Reason
 
 The single chart brings the Prometheus Operator, Grafana, Alertmanager, and cluster exporters with ServiceMonitor/PrometheusRule CRDs — the standard, GitOps-friendly path, versus wiring Prometheus and Grafana separately. Instrumenting the app yields real inference metrics (request rate, latency, error rate), not just infra health, and the KServe path is covered since it reuses the same image. GitOps-provisioned dashboards survive Grafana pod restarts. Alerting (rules + receiver routing) is functional-but-not-critical for Iteration 1, so it is deferred to the hardening iteration.
+
+---
+
+## Logging Stack
+
+### Decision
+
+Use **Loki + Promtail** (`loki-stack` chart) in **single-binary mode with filesystem storage**, surfaced in the existing Grafana. Durable GCS-backed storage and a Promtail → Grafana Alloy migration are deferred to Iteration 2.
+
+### Reason
+
+Loki is label-based and Grafana-native, so logs land in the Grafana already used for metrics — one UI for metrics + logs, correlated by shared labels. Single-binary + filesystem is the lightest footprint and adequate for a learning cluster; the trade-off is that logs live on a PVC and are lost if it is deleted. Promtail is the simplest Loki collector (in LTS/maintenance but fully functional). Durable object-store (GCS) backing and the newer Alloy collector are production concerns for Iteration 2.
