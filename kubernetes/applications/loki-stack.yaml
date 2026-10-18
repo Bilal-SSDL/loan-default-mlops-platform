@@ -20,6 +20,12 @@ spec:
           enabled: true             # DaemonSet: tails all pod logs -> Loki
         grafana:
           enabled: false            # you already have Grafana (kube-prometheus-stack)
+          sidecar:
+            datasources:
+              # The chart otherwise ships its own Loki datasource with isDefault: true, which
+              # clashes with the default Prometheus one and stops Grafana from starting.
+              # The Loki datasource comes from workloads/monitoring/loki-datasource.yaml instead.
+              enabled: false
         prometheus:
           enabled: false            # already have Prometheus
   destination:
