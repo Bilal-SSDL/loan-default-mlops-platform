@@ -1,4 +1,6 @@
 mlflow==3.1.1
+# mlflow 3.1.1 imports sqlalchemy.pool.FallbackAsyncAdaptedQueuePool, which newer SQLAlchemy releases removed
+sqlalchemy>=2.0,<2.1
 psycopg2-binary
 google-cloud-storage
 gunicorn

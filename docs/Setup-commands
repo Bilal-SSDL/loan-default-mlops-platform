@@ -4,6 +4,7 @@
 # deploy terraform
 
 cd terraform/environments/dev
+terraform init
 terraform apply
 
 # 2:  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
