@@ -16,6 +16,7 @@ CLUSTER="lendo-app-gke-cluster"
 SA_EMAIL="lendo-app-service-account@${PROJECT_ID}.iam.gserviceaccount.com"
 REGISTRY="${REGION}-docker.pkg.dev/${PROJECT_ID}/lendo-app-artifact-repo"
 TF_STATE_BUCKET="gs://lendo-mlops-terraform-state"
+GITHUB_REPO="Bilal-SSDL/loan-default-mlops-platform"
 
 MLFLOW_IMAGE="${REGISTRY}/mlflow:1.0"
 TRAINER_IMAGE="${REGISTRY}/mlflow-api/loan-trainer:1.0"
@@ -78,11 +79,18 @@ step_secrets() {
   require gcloud kubectl
   mkdir -p secrets
   log "Service-account key"
-  # Only create a key once; every call creates a new key and GCP caps them at 10 per account.
-  if [[ -f secrets/mlflow-sa-key.json ]]; then
-    echo "secrets/mlflow-sa-key.json already exists, skipping key creation"
+  # Reuse the local key only if GCP still knows it: recreating the service account (terraform
+  # destroy/apply) revokes old keys, and a stale key fails with "invalid_grant: Invalid JWT Signature".
+  # Avoid creating keys needlessly, since GCP caps them at 10 per account.
+  local key_file=secrets/mlflow-sa-key.json key_id=""
+  [[ -f "$key_file" ]] && key_id=$(sed -n 's/.*"private_key_id": *"\([^"]*\)".*/\1/p' "$key_file")
+  if [[ -n "$key_id" ]] && gcloud iam service-accounts keys list --iam-account="$SA_EMAIL" \
+       --managed-by=user --format='value(name.basename())' | grep -qx "$key_id"; then
+    echo "$key_file is still valid (key $key_id), reusing it"
   else
-    gcloud iam service-accounts keys create secrets/mlflow-sa-key.json --iam-account="$SA_EMAIL"
+    [[ -f "$key_file" ]] && echo "$key_file is no longer valid for $SA_EMAIL, creating a new key"
+    rm -f "$key_file"
+    gcloud iam service-accounts keys create "$key_file" --iam-account="$SA_EMAIL"
   fi
 
   log "IAM bindings"
@@ -95,6 +103,13 @@ step_secrets() {
   kubectl create secret generic gcp-service-account \
     --from-file=key.json=secrets/mlflow-sa-key.json -n mlflow \
     --dry-run=client -o yaml | kubectl apply -f -
+
+  # A running MLflow keeps the credentials it loaded at startup, so restart it to use the new key.
+  if kubectl get deploy/mlflow -n mlflow >/dev/null 2>&1; then
+    log "Restart MLflow to load the current key"
+    kubectl rollout restart deploy/mlflow -n mlflow
+    kubectl rollout status deploy/mlflow -n mlflow --timeout=300s
+  fi
 }
 
 # 4: Build and push the MLflow server image if image is not already there in registry
@@ -202,6 +217,16 @@ step_cicd() {
   log "Grant roles/artifactregistry.writer to $SA_EMAIL"
   gcloud projects add-iam-policy-binding "$PROJECT_ID" \
     --member="serviceAccount:${SA_EMAIL}" --role="roles/artifactregistry.writer" --condition=None >/dev/null
+
+  # CI authenticates with the same key (secrets.GCP_SA_KEY in .github/workflows/cicd.yaml); it goes
+  # stale whenever the service account is recreated, so push the current one.
+  log "Update GitHub secret GCP_SA_KEY"
+  if command -v gh >/dev/null 2>&1 && [[ -f secrets/mlflow-sa-key.json ]]; then
+    gh secret set GCP_SA_KEY --repo "$GITHUB_REPO" < secrets/mlflow-sa-key.json
+  else
+    echo "Skipped: needs the gh CLI and secrets/mlflow-sa-key.json (run the 'secrets' step first)." >&2
+    echo "Or paste secrets/mlflow-sa-key.json into GitHub > Settings > Secrets > Actions > GCP_SA_KEY." >&2
+  fi
 }
 
 # 10: Destroy GKE/networking/SA (keeps state bucket and artifact registry)
@@ -230,7 +255,7 @@ Steps (run in this order on a fresh setup):
 
 Optional / separate:
   kfp-image     8  build + push Kubeflow trainer image
-  cicd          9  grant artifactregistry.writer for CI/CD
+  cicd          9  grant artifactregistry.writer + update GitHub secret GCP_SA_KEY
   destroy      10  targeted terraform destroy (asks for confirmation)
 
 Step 7 (KServe) is manual: see docs/milestones/milestone-17-kserve.md
